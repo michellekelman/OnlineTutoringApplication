@@ -59,6 +59,52 @@ a:hover {
   filter: blur(1px) brightness(0.5);
 }
 
+/* HEADER
+-------------------------------------------------- */
+
+.flex-wrap {
+  flex-wrap: wrap!important;
+}
+.d-flex {
+  display: flex!important;
+}
+
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  padding-left: calc(var(--bs-gutter-x) * .5);
+  margin-right: auto;
+  margin-left: auto;
+}
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+.nav-link {
+  color: black;
+}
+
+.nav-item>a:hover {
+  color: red;
+}
+
+.navbar-nav>.active>a {
+  background-color: #C0C0C0;
+  color: red;
+}
+
+.site-name {
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
+  font-size: xx-large;
+}
+
+.center-image {
+  margin-left: auto;
+  margin-right: auto;
+  height: 130px;
+}
 
 /* MAIN CONTENT AREA
 -------------------------------------------------- */
