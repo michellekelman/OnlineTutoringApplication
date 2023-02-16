@@ -107,6 +107,15 @@ a:hover {
   color: var(--color1);
 }
 
+/* Footer
+--------------------------------*/
+
+.center-image {
+  margin-left: auto;
+  margin-right: auto;
+  height: 100px;
+}
+
 /* Featurettes
 ------------------------- */
 
