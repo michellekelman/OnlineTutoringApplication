@@ -36,31 +36,6 @@ div {
   margin: 0;
 }
 
-
-/* CUSTOMIZE THE CAROUSEL
--------------------------------------------------- */
-
-.carousel {
-  margin-bottom: 4rem;
-}
-
-.carousel-caption {
-  bottom: 3rem;
-  z-index: 10;
-}
-
-.carousel-item {
-  height: 32rem;
-}
-
-.carousel-img {
-  object-fit: cover;
-  object-position: center;
-  width: 100%;
-  height: 100%;
-  filter: blur(1px) brightness(0.5);
-}
-
 /* HEADER
 -------------------------------------------------- */
 
@@ -84,6 +59,30 @@ div {
 
 .heading {
   background: linear-gradient(rgba(255, 255, 255, 0), 95%, rgba(51, 51, 51, 0.3));
+}
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+.carousel {
+  margin-bottom: 4rem;
+}
+
+.carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+}
+
+.carousel-item {
+  height: 32rem;
+}
+
+.carousel-img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  filter: blur(1px) brightness(0.5);
 }
 
 /* MAIN CONTENT AREA
@@ -128,11 +127,17 @@ div {
   color: var(--color1);
 }
 
-/* Featurettes
-------------------------- */
+/* Footer
+--------------------------------*/
 
-.featurette-divider {
-  margin: 2rem 0;
+.footer-image {
+  margin-left: auto;
+  margin-right: auto;
+  height: 75px;
+}
+
+.created {
+  color: var(--color1)
 }
 
 /* RESPONSIVE CSS
