@@ -5,12 +5,8 @@
   --color1: #1D323F;
   --color2: #2D5D62;
   --color3: #77A8A3;
-  --color4: #A1C7C7;
+  --color4: #c8e0e0;
   --color5: #dcece9;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 * {
@@ -58,7 +54,7 @@ div {
 }
 
 .heading {
-  background: linear-gradient(rgba(255, 255, 255, 0), 95%, rgba(51, 51, 51, 0.3));
+  background-color: var(--color4);
 }
 
 /* CUSTOMIZE THE CAROUSEL
@@ -138,6 +134,11 @@ div {
 
 .created {
   color: var(--color1)
+}
+
+.footing {
+  background-color: var(--color4);
+  margin-bottom: 0;
 }
 
 /* RESPONSIVE CSS
