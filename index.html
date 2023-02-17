@@ -10,29 +10,10 @@
 </head>
 
   <body>
-    <!-- Remove "Hello, world!" later -->
-    <!--
-        Header (navbar):
-        - logo
-        - website name
-        - menu - student login, tutor login, sign up
-        Footer:
-        - logo
-        - created by ---
-        - faq/help
-        - more info - links to cs 4485 website
-        Main Content Area:
-        - about the website
-        --- what is a student? what can they do?
-        --- what is a tutor? what can they do?
-        - tutor listing - hardcode tutors with images/about me/subjects, searchbar for tutor listing
-        - upcoming appointments - empty by default unless user is signed in
-    -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
     
     <!-- Header -->
-    <!-- https://getbootstrap.com/docs/5.2/examples/headers/ -->
     <div class="heading">
       <div class="container">
         <header class="d-flex flex-wrap justify-content-center py-2">
@@ -50,7 +31,6 @@
     </div>
 
     <!-- Main Content Area -->
-    <!-- https://getbootstrap.com/docs/5.2/examples/ -->
     <div>
       <main>
         <div id="myCarousel" class="carousel slide pointer-event" data-bs-ride="carousel">
@@ -104,18 +84,16 @@
         </div>
 
 
-        <!-- Tutor Listing and Upcoming Appointments
-        ================================================== -->
-        <!-- Wrap the rest of the page in another container to center all the content. -->
+        <!-- Tutor Listing and Upcoming Appointments -->
 
         <div class="container main-content">
-          <!-- Three columns of text below the carousel -->
           <div class="row search col-lg-6">
             <div class="input-group">
               <input type="searchbar" class="form-control rounded" placeholder="Search for Tutors" aria-label="Search" aria-describedby="search-addon" />
               <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
             </div>
           </div>
+          <!-- Three columns of text below the carousel -->
           <div class="row tutors">
             <!-- Tutor 1 -->
             <div class="col-lg-4">
@@ -175,7 +153,7 @@
             </div>
           </div>
 
-          <hr class="featurette-divider">
+          <hr class="hr my-5">
 
           <!-- Upcoming Appointments (signed out) -->
           <div class="row upcoming">
@@ -202,21 +180,20 @@
     </div>
 
     <!-- Footer -->
-    <!-- https://getbootstrap.com/docs/5.2/examples/footers/ -->
     <div class="container">
-      <footer class="py-3 my-4">
-        <div class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top border-bottom pb-3 mb-3">
-          <a href="/" class="align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-            <img src="img/circleLogo.png" class="center-image" alt="logo">
+      <hr class="hr my-2">
+      <footer class="d-flex flex-wrap justify-content-center align-items-center py-2 my-2">
+        <div class="col-md-6 d-flex justify-content-start align-items-center">
+          <a href="/" class="me-2">
+            <img src="img/circleLogo.png" class="footer-image" alt="logo">
           </a>
-    
-          <ul class="nav col-md-4 justify-content-end">
-        
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="https://catalog.utdallas.edu/2017/undergraduate/courses/cs4485" class="nav-link px-2 text-muted">More Information</a></li>
-          </ul>
+          <p class="mb-3 mb-md-0 created">Created by: Merlyn Roldan, Michelle Kelman, Tiffany Agena, and Vibha Aiyagari</p>
         </div>
-        <p class="text-center text-muted">Created by: Merlyn Roldan, Michelle Kelman, Tiffany Agena, and Vibha Aiyagari</p>
+        <ul class="nav col-md-6 justify-content-end align-items-center d-flex">
+          <li class="nav-item ms-3"><a href="#" class="nav-link">FAQs</a></li>
+          <li class="nav-item ms-3"><a href="#" class="nav-link">Help</a></li>
+          <li class="nav-item ms-3"><a href="https://utdesign.utdallas.edu/" class="nav-link">More Information</a></li>
+        </ul>
       </footer>
     </div>
   </body>
