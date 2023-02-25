@@ -60,10 +60,6 @@ div {
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
-.carousel {
-  margin-bottom: 4rem;
-}
-
 .carousel-caption {
   bottom: 3rem;
   z-index: 10;
@@ -149,15 +145,5 @@ div {
     margin-bottom: 1.25rem;
     font-size: 1.25rem;
     line-height: 1.4;
-  }
-
-  .featurette-heading {
-    font-size: 50px;
-  }
-}
-
-@media (min-width: 62em) {
-  .featurette-heading {
-    margin-top: 7rem;
   }
 }
