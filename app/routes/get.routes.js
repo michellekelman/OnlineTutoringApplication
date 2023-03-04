@@ -1,7 +1,4 @@
 // GET public and protected resources
-    // GET /api/test/all
-    // GET /api/test/user for all logged in users (user/tutor/admin)
-    // GET /api/test/tutor for tutors
 
 const { authJwt } = require("../middlewares");
 const controller = require("../controllers/user.controller");
