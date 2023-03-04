@@ -1,7 +1,4 @@
 // POST signup, signin, and signout
-    // POST /api/auth/signup
-    // POST /api/auth/signin
-    // POST /api/auth/signout
 
 const {verifyStudentSignUp, verifyTutorSignUp} = require("../middlewares");
 const controller = require("../controllers/auth.controller");
