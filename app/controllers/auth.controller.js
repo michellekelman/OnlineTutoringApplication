@@ -9,14 +9,14 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.studentSignup = (req, res) => {
-    const user = new User({
+    const user = new User ({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
     });
-
-    db.collection('users').insertOne([user]);
+    User.create(user);
+    return res.status(200).json(user);
 };
 
 exports.studentSignin = (req, res) => {
@@ -28,26 +28,20 @@ exports.studentSignin = (req, res) => {
             res.status(500).send({ message: err });
             return;
         }
-
         if (!user) {
             return res.status(404).send({ message: "User not found." });
         }
-
         var passwordIsValid = bcrypt.compareSync(
             req.body.password,
             user.password
         );
-
         if (!passwordIsValid) {
             return res.status(401).send({ message: "Invalid password!"});
         }
-
         var token = jwt.sign({ id: user.id }, config.secret, {
             expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
         });
-
         req.session.token = token;
-
         res.status(200).send({
             id: user._id,
             firstName: user.firstName,
@@ -64,7 +58,6 @@ exports.tutorSignup = (req, res) => {
         subjects: req.body.subjects,
         password: bcrypt.hashSync(req.body.password, 8),
     });
-
     db.collection('tutors').insertOne([tutor]);
 };
 
@@ -77,26 +70,20 @@ exports.tutorSignin = (req, res) => {
             res.status(500).send({ message: err });
             return;
         }
-
         if (!tutor) {
             return res.status(404).send({ message: "Tutor not found." });
         }
-
         var passwordIsValid = bcrypt.compareSync(
             req.body.password,
             tutor.password
         );
-
         if (!passwordIsValid) {
             return res.status(401).send({ message: "Invalid password!"});
         }
-
         var token = jwt.sign({ id: tutor.id }, config.secret, {
             expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
         });
-
         req.session.token = token;
-
         res.status(200).send({
             id: tutor._id,
             firstName: tutor.firstName,

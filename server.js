@@ -18,6 +18,7 @@ const templatePath = path.join(__dirname, './templates');
 
 // connects hbs and MongoDB files
 app.use(express.json());
+app.use(express.static(templatePath));
 app.set("view engine", "hbs");
 app.set("views", templatePath);
 
@@ -40,7 +41,6 @@ app.get("/", (req,res)=>{
 
 // open Mongoose connection to MongoDB database
 const db = require("./app/models");
-const Role = db.role;
 
 db.mongoose
     .connect(`mongodb+srv://${dbConfig.HOST}:${dbConfig.PASS}@${dbConfig.PORT}/${dbConfig.DB}`, {

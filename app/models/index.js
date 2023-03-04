@@ -9,6 +9,6 @@ db.user = require("./user.model");
 db.tutor = require("./tutor.model");
 db.appointment = require("./appointment.model");
 
-db.COLLECTIONS = ["user", "tutor", "admin"];
+db.COLLECTIONS = ["users", "tutors", "appointments"];
 
 module.exports = db;

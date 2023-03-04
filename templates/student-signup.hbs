@@ -17,7 +17,7 @@
     <div class="heading">
       <div class="container">
         <header class="d-flex flex-wrap justify-content-center py-2">
-          <a href="home" class="d-flex align-items-center m-2 me-auto text-decoration-none">
+          <a href="/" class="d-flex align-items-center m-2 me-auto text-decoration-none">
             <img src="img/circleLogo.png" class="center-image" alt="logo">
             <h1 class="site-name">Comet Study Corner</h1>
           </a>
@@ -40,22 +40,22 @@
               <h2 class="fw-normal mt-5 mb-3 text-center">Student Sign Up</h2>
               <div class="container col-xl-8">
                 <div class="card mb-5 border-0" style="border-radius: 15px">
-                  <form class="card-body px-5 py-3">
+                  <form class="card-body px-5 py-3" action="/student-signup" method="POST">
                     <div class="form-group py-3">
                       <label><b>First Name</b></label>
-                      <input type="text" name = "firstName" class="form-control"/>
+                      <input type="text" name="firstName" class="form-control"/>
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Last Name</b></label>
-                      <input type="text" name = "lastName" class="form-control"/>
+                      <input type="text" name="lastName" class="form-control"/>
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Email Address</b></label>
-                      <input type="email" name = "email" class="form-control" placeholder="example@example.com"/>
+                      <input type="email" name="email" class="form-control" placeholder="example@example.com"/>
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Password</b></label>
-                      <input type="password"  name = "password" class="form-control"/>
+                      <input type="password" name="password" class="form-control"/>
                       <div class="small text-muted mt-2">Password minimum length is 8 characters.<br>Password must include 1 upper case letter, 1 lower case letter, 1 number, and 1 special character.</div>
                     </div>
                     <div class="form-group pb-3">
@@ -79,7 +79,7 @@
       <div class="container">
         <footer class="d-flex flex-wrap justify-content-center align-items-center py-2">
           <div class="col-md-6 d-flex justify-content-start align-items-center my-2">
-            <a href="home" class="me-2">
+            <a href="/" class="me-2">
               <img src="img/circleLogo.png" class="footer-image" alt="logo">
             </a>
             <p class="mb-0 created">Created by: Merlyn Roldan, Michelle Kelman, Tiffany Agena, and Vibha Aiyagari</p>
