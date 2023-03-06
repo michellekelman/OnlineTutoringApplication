@@ -43,24 +43,24 @@
                   <form class="card-body px-5 py-3" action="/student-signup" method="POST">
                     <div class="form-group py-3">
                       <label><b>First Name</b></label>
-                      <input type="text" name="firstName" class="form-control"/>
+                      <input type="text" name="firstName" class="form-control" required/>
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Last Name</b></label>
-                      <input type="text" name="lastName" class="form-control"/>
+                      <input type="text" name="lastName" class="form-control" required/>
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Email Address</b></label>
-                      <input type="email" name="email" class="form-control" placeholder="example@example.com"/>
+                      <input type="email" name="email" class="form-control" placeholder="example@example.com" required/>
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Password</b></label>
-                      <input type="password" name="password" class="form-control"/>
+                      <input type="password" name="password" class="form-control" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*?[!@#$%^&*+`~'=?\|\]\[\(\)\-<>/]).{8,}" required/>
                       <div class="small text-muted mt-2">Password minimum length is 8 characters.<br>Password must include 1 upper case letter, 1 lower case letter, 1 number, and 1 special character.</div>
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Confirm Password</b></label>
-                      <input type="password" class="form-control"/>
+                      <input type="password" name="confirmpassword" class="form-control" required/>
                       <div class="small text-muted mt-2">Password fields must match.</div>
                     </div>
                     <div class="form-group text-center pb-3">
