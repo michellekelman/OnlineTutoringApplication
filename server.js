@@ -43,7 +43,7 @@ app.get("/", (req,res)=>{
 const db = require("./app/models");
 
 db.mongoose
-    .connect(`mongodb+srv://${dbConfig.HOST}:${dbConfig.PASS}@${dbConfig.PORT}/${dbConfig.DB}`, {
+    .connect(`mongodb+srv://${dbConfig.HOST}:${dbConfig.PASS}@${dbConfig.PORT}/${dbConfig.DATABASE}`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
