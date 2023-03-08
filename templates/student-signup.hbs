@@ -63,7 +63,7 @@
                       <div class="small text-muted mt-2">Password fields must match.</div>
                     </div>
                     <div class="form-group text-center pb-3">
-                      <button type="submit" id="submitbtn" class="btn btn-primary btn-lg" disabled>Sign Up</button>
+                      <button type="submit" id="submitbtn" class="btn btn-primary btn-lg">Sign Up</button>
                     </div>
                   </form>
                 </div>
@@ -80,15 +80,14 @@
 
 	    function validatePassword(){
 	      if(password.value != confirm_password.value) {
-		      confirm_password.setCustomValidity("Passwords Don't Match");
+		      confirm_password.setCustomValidity("Passwords don't match.");
 	      } else {
 		      confirm_password.setCustomValidity('');
-          button.disabled = false;
 	      }
 	    }
 
 	    password.onchange = validatePassword;
-	    confirm_password.onkeyup = validatePassword;
+	    confirm_password.onchange = validatePassword;
     </script>
     
     <!-- Footer -->

@@ -14,9 +14,7 @@ module.exports = function(app) {
 
     app.post(
         "/student-signup",
-        [
-            verifyStudentSignUp.checkDuplicateEmailStudent,
-        ],
+        verifyStudentSignUp.checkDuplicateEmailStudent,
         controller.studentSignup
     );
 
@@ -24,9 +22,7 @@ module.exports = function(app) {
 
     app.post(
         "/tutor-signup",
-        [
-            verifyTutorSignUp.checkDuplicateEmailTutor,
-        ],
+        verifyTutorSignUp.checkDuplicateEmailTutor,
         controller.tutorSignup
     );
 

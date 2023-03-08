@@ -16,7 +16,7 @@ exports.studentSignup = (req, res) => {
         password: bcrypt.hashSync(req.body.password, 8),
     });
     User.create(user);
-    return res.status(200).json(user);
+    res.status(200).json(user);
 };
 
 exports.studentSignin = (req, res) => {
