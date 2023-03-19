@@ -12,21 +12,13 @@ module.exports = function(app) {
         next();
     });
 
-    app.post(
-        "/student-signup",
-        verifyStudentSignUp.checkDuplicateEmailStudent,
-        controller.studentSignup
-    );
+    app.post("/student-signup", controller.studentSignup);
 
-    app.post("student-login", controller.studentSignin);
+    app.post("/student-login", controller.studentSignin);
 
-    app.post(
-        "/tutor-signup",
-        verifyTutorSignUp.checkDuplicateEmailTutor,
-        controller.tutorSignup
-    );
+    app.post("/tutor-signup", controller.tutorSignup);
 
-    app.post("tutor-login", controller.tutorSignin);
+    app.post("/tutor-login", controller.tutorSignin);
 
     //app.post("signout", controller.signout);
 }

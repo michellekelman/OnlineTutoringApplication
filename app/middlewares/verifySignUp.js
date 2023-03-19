@@ -10,10 +10,12 @@ checkDuplicateEmailStudent = (req, res, next) => {
         email: req.body.email
     }).exec((err, user) => {
         if (err) {
-            return res.status(500).send({ error: err });
+            res.status(500).send({ error: err });
+            return;
         }
         if (user != null) {
-            return res.status(400).send({ error: "Failed! Email is already in use!" });
+            res.status(400).send({ error: "Failed! Email is already in use!" });
+            return;
         }
     });
     next();

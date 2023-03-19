@@ -9,14 +9,26 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.studentSignup = (req, res) => {
-    const user = new User ({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8),
+    User.findOne({
+        email: req.body.email
+    }).exec((err, user) => {
+        if (err) {
+            return res.status(500).send({ error: err });
+        }
+        else if (user != null) {
+            return res.status(401).send({ error: "Failed! Email is already in use!" });
+        }
+        else {
+            const user = new User ({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                password: bcrypt.hashSync(req.body.password, 8),
+            });
+            User.create(user);
+            return res.status(200).json(user);
+        }
     });
-    User.create(user);
-    res.status(200).json(user);
 };
 
 exports.studentSignin = (req, res) => {
@@ -28,25 +40,27 @@ exports.studentSignin = (req, res) => {
             res.status(500).send({ message: err });
             return;
         }
-        if (!user) {
+        else if (!user) {
             return res.status(404).send({ message: "User not found." });
         }
-        var passwordIsValid = bcrypt.compareSync(
-            req.body.password,
-            user.password
-        );
-        if (!passwordIsValid) {
-            return res.status(401).send({ message: "Invalid password!"});
+        else {
+            var passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                user.password
+            );
+            if (!passwordIsValid) {
+                return res.status(401).send({ message: "Invalid password!"});
+            }
+            var token = jwt.sign({ id: user.id }, config.secret, {
+                expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
+            });
+            req.session.token = token;
+            return res.status(200).send({
+                id: user._id,
+                firstName: user.firstName,
+                email: user.email,
+            });
         }
-        var token = jwt.sign({ id: user.id }, config.secret, {
-            expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
-        });
-        req.session.token = token;
-        res.status(200).send({
-            id: user._id,
-            firstName: user.firstName,
-            email: user.email,
-        });
     });
 };
 
