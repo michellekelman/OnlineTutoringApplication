@@ -18,6 +18,8 @@
                 type: String,
                 required: true
             },
+            aboutMe: String,
+            Availability: Array,
             email: {
                 type: String,
                 required: true
@@ -26,10 +28,11 @@
                 type: String,
                 required: true
             },
-            aboutMe: String,
             profilePic: String,
-            subjects: [String],
-            availability: [String],
+            subjects: {
+                type: Array,
+                required: true
+            },
             tutoringHours: Number
         })
     );

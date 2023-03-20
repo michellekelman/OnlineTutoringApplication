@@ -39,18 +39,15 @@
             <div class="col-md">
               <h2 class="fw-normal mt-5 mb-3 text-center">Tutor Login</h2>
               <div class="container col-xl-8">
-                {{#if message}}
-                  <h5 class="alert alert-danger mt-4">{{message}}</h4>
-                {{/if}}
                 <div class="card mb-5 border-0" style="border-radius: 15px">
-                  <form class="card-body px-5 py-3" action="/tutor-login" method="POST">
+                  <form class="card-body px-5 py-3">
                     <div class="form-group py-3">
                       <label><b>Email Address</b></label>
-                      <input type="email" name = "email" class="form-control" required/>
+                      <input type="email" name = "email" class="form-control"/>
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Password</b></label>
-                      <input type="password" name = "password" class="form-control" required/>
+                      <input type="password" name = "password" class="form-control"/>
                     </div>
                     <div class="form-group text-center pb-3">
                       <button type="submit" class="btn btn-primary btn-lg">Log In</button>
