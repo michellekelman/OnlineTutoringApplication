@@ -13,8 +13,8 @@ checkDuplicateEmailStudent = (req, res, next) => {
             res.status(500).send({ error: err });
             return;
         }
-        if (user != null) {
-            res.status(400).send({ error: "Failed! Email is already in use!" });
+        else if (user != null) {
+            res.status(401).send({ error: "Failed! Email is already in use!" });
             return;
         }
     });
@@ -31,9 +31,11 @@ checkDuplicateEmailTutor = (req, res) => {
     }).exec((err, tutor) => {
         if (err) {
             res.status(500).send({ error: err });
+            return;
         }
-        if (tutor) {
-            res.status(400).send({ error: "Failed! Email is already in use!" });
+        else if (tutor) {
+            res.status(401).send({ error: "Failed! Email is already in use!" });
+            return;
         }
     });
 };
