@@ -26,7 +26,7 @@ const User = mongoose.model(
             type: String,
             required: true
         },
-        favorites: Array,
+        favorites: [{type: mongoose.Types.ObjectId, ref: 'Tutor'}],
         tutoringHours: Number
     })
 );

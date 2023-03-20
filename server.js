@@ -10,6 +10,7 @@ const path = require("path");
 const cookieSession = require("cookie-session");
 // for getting database string
 const dbConfig = require("./app/config/db.config");
+const fileUpload = require('express-fileupload');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.static(templatePath));
 app.set("view engine", "hbs");
 app.set("views", templatePath);
+app.use(fileUpload());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({
@@ -43,7 +45,7 @@ app.get("/", (req,res)=>{
 const db = require("./app/models");
 
 db.mongoose
-    .connect(`mongodb+srv://${dbConfig.HOST}:${dbConfig.PASS}@${dbConfig.PORT}/${dbConfig.DB}`, {
+    .connect(`mongodb+srv://${dbConfig.HOST}:${dbConfig.PASS}@${dbConfig.PORT}/${dbConfig.DATABASE}`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
