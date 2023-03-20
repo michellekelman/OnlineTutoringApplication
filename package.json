@@ -1,0 +1,31 @@
+{
+  "name": "onlinetutoringapplication",
+  "version": "1.0.0",
+  "description": "UTD CS 4485 Senior Design Project - Online Tutoring Application - Team 9\r <br>\r https://github.com/michellekelman/OnlineTutoringApplication",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michellekelman/OnlineTutoringApplication.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/michellekelman/OnlineTutoringApplication/issues"
+  },
+  "homepage": "https://github.com/michellekelman/OnlineTutoringApplication#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "hbs": "^4.2.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.10.0",
+    "package.json": "^0.0.0"
+  }
+}
