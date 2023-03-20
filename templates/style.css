@@ -1,0 +1,163 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+
+:root {
+  --color1: #1D323F;
+  --color2: #2D5D62;
+  --color3: #77A8A3;
+  --color4: #c8e0e0;
+  --color5: #dcece9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--color2);
+  background-color: var(--color5);
+}
+
+a {
+  color: var(--color2);
+}
+
+a:hover {
+  color: var(--color1);
+}
+
+div {
+  margin: 0;
+}
+
+/* HEADER
+-------------------------------------------------- */
+
+.flex-wrap {
+  flex-wrap: wrap!important;
+}
+.d-flex {
+  display: flex!important;
+}
+
+.nav-link, .site-name {
+  color: var(--color1);
+}
+
+.center-image {
+  margin-left: auto;
+  margin-right: auto;
+  height: 100px;
+  margin: 1rem;
+}
+
+.heading {
+  background-color: var(--color4);
+}
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+.carousel {
+  margin-bottom: 4rem;
+}
+
+.carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+}
+
+.carousel-item {
+  height: 32rem;
+}
+
+.carousel-img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  filter: blur(1px) brightness(0.5);
+}
+
+/* MAIN CONTENT AREA
+-------------------------------------------------- */
+
+.search {
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+
+.tutors {
+  display: flex;
+  justify-content: center;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.tutors img {
+  object-fit: cover;
+  object-position: center;
+  width: 130px;
+  height: 130px;
+}
+
+.upcoming {
+  min-height: 30rem;
+  text-align: center;
+}
+
+.main-content .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.main-content .col-lg-4 p {
+  margin-right: 2rem;
+  margin-left: 2rem;
+}
+
+.main-content h2 {
+  margin-top: 1rem;
+  color: var(--color1);
+}
+
+/* Footer
+--------------------------------*/
+
+.footer-image {
+  margin-left: auto;
+  margin-right: auto;
+  height: 75px;
+}
+
+.created {
+  color: var(--color1)
+}
+
+.footing {
+  background-color: var(--color4);
+  margin-bottom: 0;
+}
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 40em) {
+  .carousel-caption p {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 62em) {
+  .featurette-heading {
+    margin-top: 7rem;
+  }
+}
