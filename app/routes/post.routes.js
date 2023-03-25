@@ -20,5 +20,9 @@ module.exports = function(app) {
 
     app.post("/tutor-login", controller.tutorSignin);
 
-    //app.post("signout", controller.signout);
+    app.post("/profile", controller.studentProfile);
+
+    app.post("/tutorProfile", controller.tutorProfile);
+
+    app.post("/logout", controller.signout);
 }

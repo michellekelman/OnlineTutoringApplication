@@ -28,7 +28,8 @@ exports.studentSignup = (req, res) => {
                 tutoringHours: 0
             });
             User.create(user);
-            return res.status(200).json(user);
+            res.redirect("/student-login");
+            //return res.status(200).json(user);
         }
     });
 };
@@ -57,11 +58,32 @@ exports.studentSignin = (req, res) => {
                 expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
             });
             req.session.token = token;
-            return res.status(200).send({
+            res.redirect("/home");
+            /*return res.status(200).send({
                 id: user._id,
                 firstName: user.firstName,
                 email: user.email,
             });
+            */
+        }
+    });
+};
+
+exports.studentProfile = (req, res) => {
+    const decoded = jwt.verify(req.session.token, config.secret).id;
+    User.findOne({
+        _id: decoded,
+    })
+    .exec((err, user) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        else if (!user) {
+            return res.render("./home", {message: "Profile does not exist."});
+        }
+        else {
+            res.render("profile", {'userProfile' : user})
         }
     });
 };
@@ -95,7 +117,8 @@ exports.tutorSignup = (req, res) => {
             });
             Tutor.create(tutor);
             profilePic.mv(__dirname + '/../../photos/' + tutor._id + tutor.profilePic);
-            return res.status(200).json(tutor);
+            res.redirect("/tutor-login");
+            //return res.status(200).json(tutor);
         }
     });
 };
@@ -124,11 +147,31 @@ exports.tutorSignin = (req, res) => {
                 expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
             });
             req.session.token = token;
-            res.status(200).send({
+            res.redirect("/home-tutor");
+            /*res.status(200).send({
                 id: tutor._id,
                 firstName: tutor.firstName,
                 email: tutor.email,
-            });
+            });*/
+        }
+    });
+};
+
+exports.tutorProfile = (req, res) => {
+    const decoded = jwt.verify(req.session.token, config.secret).id;
+    Tutor.findOne({
+        _id: decoded,
+    })
+    .exec((err, tutor) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        else if (!tutor) {
+            return res.render("./home-tutor", {message: "Profile does not exist."});
+        }
+        else {
+            res.render("tutorProfile", {'tutorProfile' : tutor})
         }
     });
 };
@@ -136,7 +179,8 @@ exports.tutorSignin = (req, res) => {
 exports.signout = async (req, res) => {
     try {
         req.session = null;
-        return res.status(200).send({ message: "Successfully signed out."});
+        res.redirect("/");
+        //return res.status(200).send({ message: "Successfully signed out."});
     } catch (err) {
         this.next(err);
     }

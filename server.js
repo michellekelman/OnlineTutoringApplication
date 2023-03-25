@@ -3,7 +3,6 @@
 
 // for building the Rest APIs
 const express = require("express");
-const path = require("path");
 // provides Express middleware to enable CORS 
 // const cors = require("cors");
 // helps store session data on the client within a cookie without requiring any database/resources on the server side
@@ -15,6 +14,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 // give name of template (html) files
+const path = require("path");
 const templatePath = path.join(__dirname, './templates');
 
 // connects hbs and MongoDB files
@@ -37,10 +37,6 @@ app.use(
     })
 );
 
-app.get("/", (req,res)=>{
-    res.render("home")
-});
-
 // open Mongoose connection to MongoDB database
 const db = require("./app/models");
 
@@ -58,6 +54,23 @@ db.mongoose
     });
 
 // routes
+// show home page
+app.get("/", (req, res)=>{
+    res.render("home")
+});
+// if logged in, show home-authenticated page
+app.get("/home", isLoggedIn, function (req, res) {
+    res.render("home-authenticated");
+});
+app.get("/home-tutor", isLoggedIn, function (req, res) {
+    res.render("home-authenticated-tutor");
+});
+// determine if user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.session != null) return next();
+    res.redirect("/");
+}
+// other routes
 require('./app/routes/post.routes')(app);
 require('./app/routes/get.routes')(app);
 

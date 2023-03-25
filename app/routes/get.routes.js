@@ -27,4 +27,16 @@ module.exports = function(app) {
     app.get("/tutor-login", (req,res)=>{
         res.render("tutor-login")
     });
+
+    app.get("/profile", (req,res)=>{
+        res.render("profile")
+    });
+
+    app.get("/tutorProfile", (req,res)=>{
+        res.render("tutorProfile")
+    });
+
+    app.get("/logout", (req,res)=>{
+        res.redirect("/")
+    });
 };

@@ -57,6 +57,13 @@ div {
   background-color: var(--color4);
 }
 
+/* Button
+-------------------------------------------------- */
+
+button {
+  color: var(--color3);
+}
+
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
@@ -121,6 +128,14 @@ div {
 .main-content h2 {
   margin-top: 1rem;
   color: var(--color1);
+}
+
+/* Table
+--------------------------------*/
+
+th,
+td {
+  padding: 20px;
 }
 
 /* Footer
