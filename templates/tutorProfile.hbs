@@ -32,58 +32,65 @@
     <!-- Main Content Area -->
     <div>
       <main>
-        <div class="container col-xl-8">
-        <div class="card mb-2 border-0" style="border-radius: 15px">
-        {{#each tutorProfile}}
-            {{#if firstName}}
-            <table>
-                <tr>
-                    <td>First Name</td>
-                    <td id="firstName">{{firstName}}</td>
-                </tr>
-                <tr>
-                    <td>Last Name</td>
-                    <td id="lastName">{{lastName}}</td>
-                    </tr>
-                <tr>
-                    <td>Email</td>
-                    <td id="email">{{email}}</td>
-                </tr>
-                <tr>
-                    <td>About Me</td>
-                    {{#if aboutMe}}
-                    <td id="aboutMe">{{aboutMe}}</td>
+        <div class="container main-content">
+          <div class="row">
+            <div class="col-md">
+              <h2 class="fw-normal mt-5 mb-3 text-center">Tutor Profile</h2>
+              <div class="container col-xl-8">
+                <div class="card mb-5 border-0" style="border-radius: 15px">
+                  {{#each tutorProfile}}
+                    {{#if firstName}}
+                      <table>
+                          <tr>
+                              <td>First Name</td>
+                              <td id="firstName">{{firstName}}</td>
+                          </tr>
+                          <tr>
+                              <td>Last Name</td>
+                              <td id="lastName">{{lastName}}</td>
+                              </tr>
+                          <tr>
+                              <td>Email</td>
+                              <td id="email">{{email}}</td>
+                          </tr>
+                          <tr>
+                              <td>About Me</td>
+                              {{#if aboutMe}}
+                              <td id="aboutMe">{{aboutMe}}</td>
+                              {{/if}}
+                              {{#unless aboutMe}}
+                              <td id="aboutMe">Add an about me so students can get to know you!</td>
+                              {{/unless}}
+                          </tr>
+                          <tr>
+                              <td>Subjects</td>
+                              {{#if subjects}}
+                              <td id="subjects">{{subjects}}</td>
+                              {{/if}}
+                              {{#unless subjects}}
+                              <td id="subjects">Add subjects to see them listed here!</td>
+                              {{/unless}}
+                          </tr>
+                          <tr>
+                              <td>Availability</td>
+                              {{#if availability}}
+                              <td id="availability">{{availability}}</td>
+                              {{/if}}
+                              {{#unless availability}}
+                              <td id="availability">Add availability to see it listed here!</td>
+                              {{/unless}}
+                          </tr>
+                          <tr>
+                              <td>Tutoring Hours</td>
+                              <td id="tutoringHours">{{tutoringHours}}</td>
+                          </tr>
+                      </table>
                     {{/if}}
-                    {{#unless aboutMe}}
-                    <td id="aboutMe">Add an about me so students can get to know you!</td>
-                    {{/unless}}
-                </tr>
-                <tr>
-                    <td>Subjects</td>
-                    {{#if subjects}}
-                    <td id="subjects">{{subjects}}</td>
-                    {{/if}}
-                    {{#unless subjects}}
-                    <td id="subjects">Add subjects to see them listed here!</td>
-                    {{/unless}}
-                </tr>
-                <tr>
-                    <td>Availability</td>
-                    {{#if availability}}
-                    <td id="availability">{{availability}}</td>
-                    {{/if}}
-                    {{#unless availability}}
-                    <td id="availability">Add availability to see it listed here!</td>
-                    {{/unless}}
-                </tr>
-                <tr>
-                    <td>Tutoring Hours</td>
-                    <td id="tutoringHours">{{tutoringHours}}</td>
-                </tr>
-            </table>
-            {{/if}}
-        {{/each}}
-        </div>
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>

@@ -32,40 +32,49 @@
     <!-- Main Content Area -->
     <div>
       <main>
-        <div class="container col-xl-8">
-        <div class="card mb-2 border-0" style="border-radius: 15px">
-        {{#each userProfile}}
-            {{#if firstName}}
-            <table>
-                <tr>
-                    <td>First Name</td>
-                    <td id="firstName">{{firstName}}</td>
-                </tr>
-                <tr>
-                    <td>Last Name</td>
-                    <td id="lastName">{{lastName}}</td>
-                    </tr>
-                <tr>
-                    <td>Email</td>
-                    <td id="email">{{email}}</td>
-                </tr>
-                <tr>
-                    <td>Favorites</td>
-                    {{#if favorites}}
-                    <td id="favorites">{{favorites}}</td>
-                    {{/if}}
-                    {{#unless favorites}}
-                    <td id="favorites">Add a tutor as a favorite to see them listed here!</td>
-                    {{/unless}}
-                </tr>
-                <tr>
-                    <td>Tutoring Hours</td>
-                    <td id="tutoringHours">{{tutoringHours}}</td>
-                </tr>
-            </table>
-            {{/if}}
-        {{/each}}
-        </div>
+        <div class="container main-content">
+          <div class="row">
+            <div class="col-md">
+              <h2 class="fw-normal mt-5 mb-3 text-center">Student Profile</h2>
+              <div class="container col-xl-8">
+                <div class="card mb-5 border-0" style="border-radius: 15px">
+                  {{#each userProfile}}
+                      {{#if firstName}}
+                        <table>
+                            <tr>
+                                <td>First Name</td>
+                                <td id="firstName">{{firstName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td id="lastName">{{lastName}}</td>
+                                </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td id="email">{{email}}</td>
+                            </tr>
+                            <!--
+                            <tr>
+                                <td>Favorites</td>
+                                {{#if favorites}}
+                                <td id="favorites">{{favorites}}</td>
+                                {{/if}}
+                                {{#unless favorites}}
+                                <td id="favorites">Add a tutor as a favorite to see them listed here!</td>
+                                {{/unless}}
+                            </tr>
+                            -->
+                            <tr>
+                                <td>Tutoring Hours</td>
+                                <td id="tutoringHours">{{tutoringHours}}</td>
+                            </tr>
+                        </table>
+                      {{/if}}
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>

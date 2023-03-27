@@ -90,6 +90,9 @@ button {
 
 /* MAIN CONTENT AREA
 -------------------------------------------------- */
+.main-content {
+  min-height: calc(100vh - 280px);
+}
 
 .search {
   margin: 0 auto;
