@@ -23,6 +23,7 @@
           </a>
           <ul class="nav nav-pills align-items-center">
             <li class="nav-item"><a href="/home-tutor" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Appointments</a></li>
             <li class="nav-item"><a href="/" class="nav-link">Logout</a></li>
           </ul>
         </header>
@@ -65,7 +66,7 @@
                           <tr>
                               <td>Subjects</td>
                               {{#if subjects}}
-                              <td id="subjects">{{subjects}}</td>
+                              <td id="subjects">{{#each this.subjects}} {{this}}<br> {{/each}}</td>
                               {{/if}}
                               {{#unless subjects}}
                               <td id="subjects">Add subjects to see them listed here!</td>
@@ -74,7 +75,7 @@
                           <tr>
                               <td>Availability</td>
                               {{#if availability}}
-                              <td id="availability">{{availability}}</td>
+                              <td id="availability">{{#each this.availability}} {{this}}<br> {{/each}}</td>
                               {{/if}}
                               {{#unless availability}}
                               <td id="availability">Add availability to see it listed here!</td>
