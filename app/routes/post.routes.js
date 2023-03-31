@@ -23,6 +23,22 @@ module.exports = function(app) {
     app.post("/profile", controller.studentProfile);
 
     app.post("/tutorProfile", controller.tutorProfile);
+    
+    app.post("/searchTutor", async (req,res) => {
+        const queryString = req.body.query
+        const queryStrings = queryString.split(" ")
+        allFirst = []
+        allLast = []
+        allSubject = []
+        queryStrings.forEach(element => {
+            allFirst.push({firstName : {$regex : String(element), $options : "i"}})
+            allLast.push({lastName : {$regex : String(element), $options : "i"}})
+            allSubject.push({subjects : [{$regex : String(element), $options : "i"}]})
+        });
+        const allTutors = await Tutor.find({$or : allSubject, $or : allFirst, $or : allLast})
+        if(!allTutors || allTutors.length === 0) res.status(400).send({error : "No tutor was found"})
+        res.status(200).send(allTutors)
+    })
 
     app.post("/logout", controller.signout);
 }
