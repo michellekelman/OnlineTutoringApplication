@@ -70,6 +70,28 @@ function isLoggedIn(req, res, next) {
     if (req.session != null) return next();
     res.redirect("/");
 }
+//read in tutor search query
+const Tutor = require("../models/searchTutor")
+
+app.get("/create", (req,res) => {
+    res.send("creating")
+})
+app.post("/create", async (req,res) => {
+    
+    const newSearch = new Tutor({
+        firstName : req.body.firstName,
+        lastName : req.body.lastName,
+        subjects : req.body.subject
+    })
+
+
+    const savedSearch = await newSearch.save()
+
+    res.send(savedSearch)
+
+
+})
+
 // other routes
 require('./app/routes/post.routes')(app);
 require('./app/routes/get.routes')(app);
