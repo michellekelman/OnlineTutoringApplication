@@ -185,3 +185,23 @@ exports.signout = async (req, res) => {
         this.next(err);
     }
 };
+
+exports.searchTutor = async (req,res) => {
+    const queryString = req.body.query;
+    const queryStrings = queryString.split(" ");
+    allFirst = [];
+    allLast = [];
+    allSubject = [];
+    queryStrings.forEach(element => {
+        allFirst.push({firstName : {$regex : String(element), $options : "i"}});
+        allLast.push({lastName : {$regex : String(element), $options : "i"}});
+        allSubject.push({subjects : {$regex : String(element), $options : "i"}});
+    });
+    const allTutors = await Tutor.find({$or: [{$or: allFirst}, {$or: allLast}, {$or: allSubject}]});
+    if(!allTutors || allTutors.length === 0) {
+        res.status(400).send({error : "No tutor was found"});
+    }
+    else {
+        res.status(200).send(allTutors);
+    }
+};
