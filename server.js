@@ -58,18 +58,6 @@ db.mongoose
 app.get("/", (req, res)=>{
     res.render("home")
 });
-// if logged in, show home-authenticated page
-app.get("/home", isLoggedIn, function (req, res) {
-    res.render("home-authenticated");
-});
-app.get("/home-tutor", isLoggedIn, function (req, res) {
-    res.render("home-authenticated-tutor");
-});
-// determine if user is logged in
-function isLoggedIn(req, res, next) {
-    if (req.session != null) return next();
-    res.redirect("/");
-}
 
 // other routes
 require('./app/routes/post.routes')(app);

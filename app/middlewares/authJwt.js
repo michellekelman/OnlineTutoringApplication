@@ -1,27 +1,28 @@
-// verify Token, check User roles in database
+// verify Token 
 
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
-const db = require("../models");
 
-verifyToken = (req, res, next) => {
+module.exports.authJwt = function(req, res, next) {
     let token = req.session.token;
 
     if (!token) {
-        return res.status(403).send({ message: "No token provided!" });
+        const error = "Unauthorized! Please login or create an account to access."
+        return next(error);
     }
 
     jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
-            return res.status(401).send({ message : "Unauthorized!" });
+            return next(err);
         }
-        req.userId = decoded.id;
-        next();
+        else {
+            if (decoded === null) {
+                const error = "Unauthorized! Please login or create an account to access."
+                return next(error);
+            }
+            else {
+                return next();
+            }
+        }
     });
 };
-
-const authJwt = {
-    verifyToken,
-};
-
-module.exports = authJwt;
