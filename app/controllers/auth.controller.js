@@ -116,7 +116,7 @@ exports.tutorSignup = (req, res) => {
                 tutoringHours: 0
             });
             Tutor.create(tutor);
-            profilePic.mv(__dirname + '/../../photos/' + tutor._id + tutor.profilePic);
+            profilePic.mv(__dirname + '/../../templates/photos/' + tutor._id + tutor.profilePic);
             res.redirect("/tutor-login");
             //return res.status(200).json(tutor);
         }
@@ -171,7 +171,7 @@ exports.tutorProfile = (req, res) => {
             return res.render("./home-tutor", {message: "Profile does not exist."});
         }
         else {
-            res.render("tutorProfile", {'tutorProfile' : tutor})
+            res.render("tutorProfile", {'tutorProfile' : tutor});
         }
     });
 };
@@ -199,9 +199,10 @@ exports.searchTutor = async (req,res) => {
     });
     const allTutors = await Tutor.find({$or: [{$or: allFirst}, {$or: allLast}, {$or: allSubject}]});
     if(!allTutors || allTutors.length === 0) {
-        res.status(400).send({error : "No tutor was found"});
+        return res.render("home", {message: "No tutors found."});
     }
     else {
-        res.status(200).send(allTutors);
+        res.render("home", {'tutors': allTutors});
+        // res.status(200).send(allTutors);
     }
 };

@@ -56,7 +56,7 @@ db.mongoose
 // routes
 // show home page
 app.get("/", (req, res)=>{
-    res.render("home")
+    res.render("home");
 });
 // if logged in, show home-authenticated page
 app.get("/home", isLoggedIn, function (req, res) {
