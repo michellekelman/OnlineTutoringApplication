@@ -171,7 +171,7 @@ exports.tutorProfile = (req, res) => {
             return res.render("./home-tutor", {message: "Profile does not exist."});
         }
         else {
-            res.render("tutorProfile", {'tutorProfile' : tutor});
+            res.render("profile-tutor", {'tutorProfile' : tutor});
         }
     });
 };
@@ -188,7 +188,10 @@ exports.signout = async (req, res) => {
 
 exports.searchTutor = async (req,res) => {
     const queryString = req.body.query;
-    const queryStrings = queryString.split(" ");
+    var queryStrings = [];
+    if (queryString != null) {
+        queryStrings = queryString.split(" ");
+    }
     allFirst = [];
     allLast = [];
     allSubject = [];
@@ -203,6 +206,30 @@ exports.searchTutor = async (req,res) => {
     }
     else {
         res.render("home", {'tutors': allTutors});
+        // res.status(200).send(allTutors);
+    }
+};
+
+exports.searchTutorHome = async (req,res) => {
+    const queryString = req.body.query;
+    var queryStrings = [];
+    if (queryString != null) {
+        queryStrings = queryString.split(" ");
+    }
+    allFirst = [];
+    allLast = [];
+    allSubject = [];
+    queryStrings.forEach(element => {
+        allFirst.push({firstName : {$regex : String(element), $options : "i"}});
+        allLast.push({lastName : {$regex : String(element), $options : "i"}});
+        allSubject.push({subjects : {$regex : String(element), $options : "i"}});
+    });
+    const allTutors = await Tutor.find({$or: [{$or: allFirst}, {$or: allLast}, {$or: allSubject}]});
+    if(!allTutors || allTutors.length === 0) {
+        return res.render("home-authenticated", {message: "No tutors found."});
+    }
+    else {
+        res.render("home-authenticated", {'tutors': allTutors});
         // res.status(200).send(allTutors);
     }
 };

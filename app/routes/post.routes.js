@@ -11,6 +11,10 @@ module.exports = function(app) {
         next();
     });
 
+    app.post("/search", controller.searchTutor);
+
+    app.post("/home-search", controller.searchTutorHome);
+    
     app.post("/student-signup", controller.studentSignup);
 
     app.post("/student-login", controller.studentSignin);
@@ -21,9 +25,7 @@ module.exports = function(app) {
 
     app.post("/profile", controller.studentProfile);
 
-    app.post("/tutorProfile", controller.tutorProfile);
-    
-    app.post("/searchTutor", controller.searchTutor);
+    app.post("/profile-tutor", controller.tutorProfile);
 
     app.post("/logout", controller.signout);
 }

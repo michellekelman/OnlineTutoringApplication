@@ -55,6 +55,12 @@ div {
 
 .heading {
   background-color: var(--color4);
+  padding-left: 2vw;
+  padding-right: 2vw;
+}
+
+.title {
+  justify-content: space-between;
 }
 
 /* Button
@@ -62,6 +68,11 @@ div {
 
 button {
   color: var(--color3);
+}
+
+.btn-link {
+  text-decoration: none;
+  color: var(--color1);
 }
 
 /* CUSTOMIZE THE CAROUSEL
@@ -91,7 +102,7 @@ button {
 /* MAIN CONTENT AREA
 -------------------------------------------------- */
 .main-content {
-  min-height: calc(100vh - 280px);
+  min-height: calc(100vh - 265px);
 }
 
 .search {
@@ -168,14 +179,10 @@ td {
     font-size: 1.25rem;
     line-height: 1.4;
   }
-
-  .featurette-heading {
-    font-size: 50px;
-  }
 }
 
-@media (min-width: 62em) {
-  .featurette-heading {
-    margin-top: 7rem;
+@media (max-width: 66em) {
+  .title {
+    justify-content: center;
   }
 }

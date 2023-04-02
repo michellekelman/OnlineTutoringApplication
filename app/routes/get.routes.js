@@ -1,7 +1,7 @@
 // GET public and protected resources
 
 const auth = require("../middlewares/authJwt");
-const controller = require("../controllers/user.controller");
+const controller = require("../controllers/auth.controller");
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -11,6 +11,8 @@ module.exports = function(app) {
         );
         next();
     });
+
+    app.get("/", controller.searchTutor);
 
     app.get("/student-signup", (req,res)=>{
         res.render("student-signup")
@@ -28,20 +30,10 @@ module.exports = function(app) {
         res.render("tutor-login")
     });
 
-    app.get("/home", auth.authJwt, function(req,res,next) {
-        res.render("home-authenticated")
-    });
+    app.get("/home", auth.authJwt, controller.searchTutorHome);
 
     app.get("/home-tutor", auth.authJwt, function(req,res,next) {
         res.render("home-authenticated-tutor")
-    });
-
-    app.get("/profile", auth.authJwt, function(req,res,next) {
-        res.render("profile")
-    });
-
-    app.get("/tutorProfile", auth.authJwt, function(req,res,next) {
-        res.render("tutorProfile")
     });
 
     app.get("/logout", (req,res)=>{

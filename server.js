@@ -54,14 +54,18 @@ db.mongoose
     });
 
 // routes
-// show home page
-app.get("/", (req, res)=>{
+
+// other routes
+require('./app/routes/get.routes')(app);
+require('./app/routes/post.routes')(app);
+
+app.get("/", (req, res) => {
     res.render("home");
 });
 
-// other routes
-require('./app/routes/post.routes')(app);
-require('./app/routes/get.routes')(app);
+app.get("*", function (req, res) {
+    res.send("PAGE NOT FOUND");   
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
