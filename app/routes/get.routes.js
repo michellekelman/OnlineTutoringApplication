@@ -32,8 +32,12 @@ module.exports = function(app) {
 
     app.get("/home", auth.authJwt, controller.searchTutorHome);
 
-    app.get("/home-tutor", auth.authJwt, function(req,res,next) {
+    app.get("/home-tutor", auth.authJwt, (req,res)=>{
         res.render("home-authenticated-tutor")
+    });
+
+    app.get("/appointment", (req,res)=>{
+        res.render("appointment")
     });
 
     app.get("/logout", (req,res)=>{
