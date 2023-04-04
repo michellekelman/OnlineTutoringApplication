@@ -107,7 +107,9 @@
                   <b>Subjects</b><br>
                   {{#each this.subjects}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
                   <b>Availability</b><br>
-                  {{#each this.availability}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
+                  {{#each this.availability}}
+                    {{this.day}} {{this.start}}-{{this.end}}{{#unless @last}},{{/unless}} 
+                  {{/each}}<br>
                   <b>About Me</b><br>
                   {{aboutMe}}
                 </p>

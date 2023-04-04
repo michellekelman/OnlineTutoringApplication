@@ -100,6 +100,28 @@ exports.tutorSignup = (req, res) => {
             return res.render("./tutor-signup", {message: "Tutor Sign Up failed. Email is already in use."});
         }
         else {
+            var avail = [];
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const starts = ["suns", "mons", "tues", "weds", "thus", "fris", "sats"];
+            const ends = ["sune", "mone", "tuee", "wede", "thue", "frie", "sate"];
+            for (let i = 0; i < 7; i++) {
+                var startval = req.body[starts[i]];
+                var endval = req.body[ends[i]];
+                if ((startval!=="") && (endval!=="")) {
+                    if (endval.localeCompare(startval)>0) {
+                        avail.push({day: days[i], start: startval, end: endval});
+                    }
+                    else {
+                        return res.render("./tutor-signup", {message: "Tutor Sign Up failed. Incorrect availability intervals."});
+                    }
+                }
+                else if ((startval!=="") || (endval!=="")) {
+                    return res.render("./tutor-signup", {message: "Tutor Sign Up failed. Incomplete availability intervals."});
+                }
+            }
+            if (avail.length==0) {
+                return res.render("./tutor-signup", {message: "Tutor Sign Up failed. No availability entered."});
+            }
             const {profilePic} = req.files;
             if (!profilePic) {
                 return res.status(400).send({ error: "No profile picture uploaded" });
@@ -112,7 +134,8 @@ exports.tutorSignup = (req, res) => {
                 aboutMe: req.body.aboutMe,
                 profilePic: '.' + profilePic.name.split(".").pop(),
                 subjects: req.body.subjects.split(", "),
-                availability: req.body.availability.split(", "),
+                //availability: req.body.availability.split(", "),
+                availability: avail,
                 tutoringHours: 0
             });
             Tutor.create(tutor);
@@ -248,10 +271,10 @@ exports.appointmentForm = async (req,res) => {
             return res.render("home-authenticated", {message: "Profile does not exist."});
         }
         else {
+            // figure out how to get availability (dates and times) and return
             res.render("make-appointment", {'tutor': tutor});
         }
     });
-    // figure out how to get availability (dates and times) and return
 };
 
 exports.makeAppointment = async (res,req) => {

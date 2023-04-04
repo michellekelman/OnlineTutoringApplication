@@ -84,7 +84,11 @@
                           <tr>
                               <td>Availability</td>
                               {{#if availability}}
-                              <td id="availability">{{#each this.availability}} {{this}}<br> {{/each}}</td>
+                              <td id="availability">
+                                {{#each this.availability}}
+                                  {{this.day}} {{this.start}}-{{this.end}}{{#unless @last}},{{/unless}} 
+                                {{/each}}<br>
+                              </td>
                               {{/if}}
                               {{#unless availability}}
                               <td id="availability">Add availability to see it listed here!</td>

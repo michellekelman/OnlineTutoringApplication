@@ -81,8 +81,44 @@
                     </div>
                     <div class="form-group pb-3">
                       <label><b>Availability</b></label>
-                      <textarea class="form-control" rows="2" name = "availability" required></textarea>
-                      <div class="small text-muted mt-2">Enter availability for each day of the week separated by commas. Ex. "Wed 11:00-16:00"</div>
+                      <div class="row justify-content-center m-1">
+                        <div class="col-3">
+                          <label class="d-flex justify-content-center my-1">Sunday</label>
+                          <input type="time" id="suns" name="suns" step="1800" class="form-control"/>
+                          <input type="time" id="sune" name="sune" step="1800" class="form-control"/>
+                        </div>
+                        <div class="col-3">
+                          <label class="d-flex justify-content-center my-1">Monday</label>
+                          <input type="time" id="mons" name="mons" step="1800" class="form-control"/>
+                          <input type="time" id="mone" name="mone" step="1800" class="form-control"/>
+                        </div>
+                        <div class="col-3">
+                          <label class="d-flex justify-content-center my-1">Tuesday</label>
+                          <input type="time" id="tues" name="tues" step="1800" class="form-control"/>
+                          <input type="time" id="tuee" name="tuee" step="1800" class="form-control"/>
+                        </div>
+                        <div class="col-3">
+                          <label class="d-flex justify-content-center my-1">Wednesday</label>
+                          <input type="time" id="weds" name="weds" step="1800" class="form-control"/>
+                          <input type="time" id="wede" name="wede" step="1800" class="form-control"/>
+                        </div>
+                        <div class="col-3">
+                          <label class="d-flex justify-content-center my-1">Thursday</label>
+                          <input type="time" id="thus" name="thus" step="1800" class="form-control"/>
+                          <input type="time" id="thue" name="thue" step="1800" class="form-control"/>
+                        </div>
+                        <div class="col-3">
+                          <label class="d-flex justify-content-center my-1">Friday</label>
+                          <input type="time" id="fris" name="fris" step="1800" class="form-control"/>
+                          <input type="time" id="frie" name="frie" step="1800" class="form-control"/>
+                        </div>
+                        <div class="col-3">
+                          <label class="d-flex justify-content-center my-1">Saturday</label>
+                          <input type="time" id="sats" name="sats" step="1800" class="form-control"/>
+                          <input type="time" id="sate" name="sate" step="1800" class="form-control"/>
+                        </div>
+                      </div>
+                      <div class="small text-muted mt-2">Must enter availability for at least one day. Leave unavailable days blank.<br>Any half-complete or incorrect intervals will result in form reset.</div>
                     </div>
                     <div class="form-group text-center pb-3">
                       <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
