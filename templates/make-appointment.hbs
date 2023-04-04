@@ -23,7 +23,7 @@
           </a>
           <ul class="nav nav-pills justify-content-center align-items-center">
             <li class="nav-item"><a href="/home" class="nav-link">Home</a></li>
-            <form class="card-body px-3" action="/profile" method="POST">
+            <form class="card-body px-3" action="/profile" method="GET">
               <div class="form-group text-center">
                 <button type="submit" class="btn btn-link">Profile</button>
               </div>
@@ -51,69 +51,56 @@
                   <h5 class="alert alert-danger mt-4">{{message}}</h4>
                 {{/if}}
                 <div class="card mb-5 border-0" style="border-radius: 15px">
-                  <!-- start remove (hardcoded) -->
-                    <div class="m-4 mb-0 row justify-content-center align-items-center">
-                      <img src="photos/6417b1b3e9449eb48f833f98.jpg" class="rounded-circle img-fluid col-3" alt="tutor_img">
-                      <div class="col-5">
-                        <h2 class="fw-normal">First Last</h2>
-                        <p>
-                          <b>Subjects:</b>
-                          one two three<br>
-                          <b>Availability:</b>
-                          one two three four five<br>
-                          <b>About Me:</b>
-                          one two three four five six seven
-                        </p>
+                  {{#each tutor}}
+                    {{#if firstName}}
+                      <div class="m-4 mb-0 row justify-content-center align-items-center">
+                        <img src="photos/{{_id}}{{profilePic}}" class="rounded-circle img-fluid col-3" alt="tutor_img">
+                        <div class="col-5">
+                          <h2 class="fw-normal">{{firstName}} {{lastName}}</h2>
+                          <p>
+                            <b>Subjects</b><br>
+                            {{#each this.subjects}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
+                            <b>Availability</b><br>
+                            {{#each this.availability}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
+                            <b>About Me</b><br>
+                            {{aboutMe}}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  <!-- end remove (hardcoded) -->
-                  {{#each tutors}}
-                    <div class="m-4 mb-0 row justify-content-center align-items-center">
-                      <img src="photos/{{_id}}{{profilePic}}" class="rounded-circle img-fluid col-3" alt="tutor_img">
-                      <div class="col-5">
-                        <h2 class="fw-normal">{{firstName}} {{lastName}}</h2>
-                        <p>
-                          <b>Subjects</b>
-                          {{#each this.subjects}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
-                          <b>Availability</b>
-                          {{#each this.availability}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
-                          <b>About Me</b>
-                          {{aboutMe}}
-                        </p>
-                      </div>
-                    </div>
+                      <form class="card-body px-5 py-3" action="/make-appointment" method="POST">
+                        <div class="form-group py-3">
+                          <label><b>Date</b></label>
+                          <input type="date" name = "date" class="form-control" required/>
+                        </div>
+                        <div class="form-group pb-3">
+                          <label><b>Duration</b></label>
+                          <select class="form-select" name="duration" id="duration" required>
+                            <option value="30">30 minutes</option>
+                            <option value="60" selected>1 hour</option>
+                            <option value="90">1 hour 30 minutes</option>
+                            <option value="120">2 hours</option>
+                          </select>
+                        </div>
+                        <div class="form-group pb-3">
+                          <label><b>Time</b></label>
+                          <select class="form-select" name="time" id="time" required>
+                            <option selected disabled hidden>--Select an Available Time--</option>
+                            <!-- get times from database -->
+                            <option>12:00pm-1:00pm</option>
+                            <option>3:00pm-4:00pm</option>
+                            <option>10:30am-11:30am</option>
+                          </select>
+                        </div>
+                        <div class="form-group pb-3">
+                          <label><b>Subject</b></label>
+                          <input type="text" name = "subject" class="form-control" placeholder="(Optional)"/>
+                        </div>
+                        <div class="form-group text-center pb-3">
+                          <button name="tid" type="submit" class="btn btn-primary btn-lg" value="{{_id}}">Make Appointment</button>
+                        </div>
+                      </form>
+                    {{/if}}
                   {{/each}}
-                  <form class="card-body px-5 py-3" action="/appointment" method="POST">
-                    <div class="form-group py-3">
-                      <label><b>Date</b></label>
-                      <input type="date" name = "date" class="form-control" required/>
-                    </div>
-                    <div class="form-group pb-3">
-                      <label><b>Duration</b></label>
-                      <select class="form-select" name="duration" id="duration" required>
-                        <option value="30">30 minutes</option>
-                        <option value="60" selected>1 hour</option>
-                        <option value="90">1 hour 30 minutes</option>
-                        <option value="120">2 hours</option>
-                      </select>
-                    </div>
-                    <div class="form-group pb-3">
-                      <label><b>Time</b></label>
-                      <select class="form-select" name="time" id="time" required>
-                        <option selected disabled hidden>--Select an Available Time--</option>
-                        <option>12:00pm-1:00pm</option>
-                        <option>3:00pm-4:00pm</option>
-                        <option>10:30am-11:30am</option>
-                      </select>
-                    </div>
-                    <div class="form-group pb-3">
-                      <label><b>Subject</b></label>
-                      <input type="text" name = "subject" class="form-control"/>
-                    </div>
-                    <div class="form-group text-center pb-3">
-                      <button type="submit" class="btn btn-primary btn-lg">Make Appointment</button>
-                    </div>
-                  </form>
                 </div>
               </div>
           </div>

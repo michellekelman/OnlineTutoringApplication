@@ -14,6 +14,8 @@ module.exports = function(app) {
 
     app.get("/", controller.searchTutor);
 
+    app.get("/search", controller.searchTutor);
+
     app.get("/student-signup", (req,res)=>{
         res.render("student-signup")
     });
@@ -32,13 +34,17 @@ module.exports = function(app) {
 
     app.get("/home", auth.authJwt, controller.searchTutorHome);
 
+    app.get("/home-search", auth.authJwt, controller.searchTutorHome);
+
+    app.get("/profile", auth.authJwt, controller.studentProfile);
+
+    app.get("/make-appointment", auth.authJwt, controller.appointmentForm);
+
     app.get("/home-tutor", auth.authJwt, (req,res)=>{
         res.render("home-authenticated-tutor")
     });
 
-    app.get("/appointment", (req,res)=>{
-        res.render("appointment")
-    });
+    app.get("/profile-tutor", auth.authJwt, controller.tutorProfile);
 
     app.get("/logout", (req,res)=>{
         res.redirect("/")

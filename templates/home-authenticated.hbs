@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Comet Study Corner</title>
+    <title>Comet Study Corner - Student</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -22,7 +22,7 @@
             <h1 class="site-name">Comet Study Corner</h1>
           </a>
           <ul class="nav nav-pills justify-content-center align-items-center">
-            <form class="card-body px-3" action="/profile" method="POST">
+            <form class="card-body px-3" action="/profile" method="GET">
               <div class="form-group text-center">
                 <button type="submit" class="btn btn-link">Profile</button>
               </div>
@@ -83,7 +83,7 @@
 
         <div class="container main-content">
           <div class="row search col-lg-6">
-            <form class="input-group col" action="/home-search" method="POST">
+            <form class="input-group col" action="/home-search" method="GET">
               <input name="query" type="searchbar" class="form-control rounded" placeholder="Search for Tutors" aria-label="Search" aria-describedby="search-addon" />
               <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             </form>
@@ -105,7 +105,9 @@
                   <b>About Me</b><br>
                   {{aboutMe}}
                 </p>
-                <p><a class="btn btn-secondary" href="/appointment">Make Appointment</a></p>
+                <form class="input-group justify-content-center" action="/make-appointment" method="GET">
+                  <button name="tid" type="submit" class="btn btn-secondary" value="{{_id}}">Make Appointment</button>
+                </form>
               </div>
             {{/each}}
           </div>

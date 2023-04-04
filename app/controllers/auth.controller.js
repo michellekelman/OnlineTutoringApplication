@@ -141,7 +141,7 @@ exports.tutorSignin = (req, res) => {
                 tutor.password
             );
             if (!passwordIsValid) {
-                return res.render("./student-login", {message: "Tutor Login failed. Incorrect Password."});
+                return res.render("./tutor-login", {message: "Tutor Login failed. Incorrect Password."});
             }
             var token = jwt.sign({ id: tutor.id }, config.secret, {
                 expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
@@ -187,7 +187,7 @@ exports.signout = async (req, res) => {
 };
 
 exports.searchTutor = async (req,res) => {
-    const queryString = req.body.query;
+    const queryString = req.query.query;
     var queryStrings = [];
     if (queryString != null) {
         queryStrings = queryString.split(" ");
@@ -211,7 +211,7 @@ exports.searchTutor = async (req,res) => {
 };
 
 exports.searchTutorHome = async (req,res) => {
-    const queryString = req.body.query;
+    const queryString = req.query.query;
     var queryStrings = [];
     if (queryString != null) {
         queryStrings = queryString.split(" ");
@@ -232,4 +232,28 @@ exports.searchTutorHome = async (req,res) => {
         res.render("home-authenticated", {'tutors': allTutors});
         // res.status(200).send(allTutors);
     }
+};
+
+exports.appointmentForm = async (req,res) => {
+    const tid = req.query.tid;
+    Tutor.findOne({
+        _id: tid,
+    })
+    .exec((err, tutor) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        else if (!tutor) {
+            return res.render("home-authenticated", {message: "Profile does not exist."});
+        }
+        else {
+            res.render("make-appointment", {'tutor': tutor});
+        }
+    });
+    // figure out how to get availability (dates and times) and return
+};
+
+exports.makeAppointment = async (res,req) => {
+    // add appt to database
 };
