@@ -63,17 +63,17 @@
                                 <td>Email</td>
                                 <td id="email">{{email}}</td>
                             </tr>
-                            <!--
                             <tr>
                                 <td>Favorites</td>
                                 {{#if favorites}}
-                                <td id="favorites">{{favorites}}</td>
+                                  {{#each ../tutors}}
+                                    {{#if @first}}<td href="/appointment">{{/if}}{{firstName}} {{lastName}}{{#unless @last}}, {{/unless}}{{#if @last}}</td>{{/if}}
+                                  {{/each}}
                                 {{/if}}
                                 {{#unless favorites}}
                                 <td id="favorites">Add a tutor as a favorite to see them listed here!</td>
                                 {{/unless}}
                             </tr>
-                            -->
                             <tr>
                                 <td>Tutoring Hours</td>
                                 <td id="tutoringHours">{{tutoringHours}}</td>

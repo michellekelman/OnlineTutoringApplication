@@ -107,6 +107,37 @@
                   <b>About Me</b><br>
                   {{aboutMe}}
                 </p>
+                <div class="mb-2">
+                  {{#if (contains ../allFavorites _id)}}
+                    <form class="justify-content-center" action="/modify-favorites" method="GET">
+                      <button id="remove-favorite-btn-{{_id}}" name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Remove from Favorites</button>
+                      <script>
+                        const removeFavoriteBtn = document.getElementById('remove-favorite-btn-{{_id}}');
+                        favoriteBtn.addEventListener('click', () => {
+                          if (favoriteBtn.innerText === 'Remove from Favorites') {
+                            removeFavoriteBtn.innerText = 'Add to Favorites';
+                          } else {
+                            removeFavoriteBtn.innerText = 'Remove from Favorites';
+                          }
+                        });
+                      </script>
+                    </form>
+                  {{else}}
+                    <form class="justify-content-center" action="/modify-favorites" method="GET">
+                      <button id="add-favorite-btn-{{_id}}" name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Add to Favorites</button>
+                      <script>
+                        const addFavoriteBtn = document.getElementById('add-favorite-btn-{{_id}}');
+                        favoriteBtn.addEventListener('click', () => {
+                          if (favoriteBtn.innerText === 'Add to Favorites') {
+                            addFavoriteBtn.innerText = 'Remove from Favorites';
+                          } else {
+                            addFavoriteBtn.innerText = 'Add to Favorites';
+                          }
+                        });
+                      </script>
+                    </form>
+                  {{/if}}
+                </div>
                 <form class="input-group justify-content-center" action="/make-appointment" method="POST">
                   <button name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Make Appointment</button>
                 </form>

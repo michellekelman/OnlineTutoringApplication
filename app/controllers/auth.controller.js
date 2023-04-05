@@ -1,5 +1,5 @@
 // handle signup, signin, and signout actions
-
+const mongoose = require('mongoose');
 const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
@@ -79,12 +79,19 @@ exports.studentProfile = (req, res) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
-        }
-        else if (!user) {
-            return res.render("home-authenticated", {message: "Profile does not exist."});
-        }
-        else {
-            res.render("profile", {'userProfile' : user})
+        } else if (!user) {
+            return res.render("./home", {message: "Profile does not exist."});
+        } else {
+            const favoriteTutors = user.favorites
+            Tutor.find({_id: {$in: favoriteTutors}})
+            .exec((err, tutors) => {
+                if (err) {
+                    res.status(500).send({ message: err });
+                    return;
+                } else {
+                    res.render("profile", { 'userProfile': user, 'tutors': tutors });
+                }
+            });
         }
     });
 };
@@ -143,7 +150,6 @@ exports.tutorSignup = (req, res) => {
                     }
                     // add to availability array
                     if (endval.localeCompare(startval)>0) {
-
                         avail.push({day: days[i], start: start12, end: end12, start24: startval, end24: endval});
                     }
                     else {
@@ -269,6 +275,7 @@ exports.searchTutor = async (req,res) => {
 };
 
 exports.searchTutorHome = async (req,res) => {
+    const decoded = jwt.verify(req.session.token, config.secret).id;
     const queryString = req.query.query;
     var queryStrings = [];
     if (queryString != null) {
@@ -287,10 +294,47 @@ exports.searchTutorHome = async (req,res) => {
         return res.render("home-authenticated", {message: "No tutors found."});
     }
     else {
-        res.render("home-authenticated", {'tutors': allTutors});
-        // res.status(200).send(allTutors);
+        User.findOne({
+            _id: decoded,
+        })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            } else {
+                res.render("home-authenticated", {'tutors': allTutors, 'allFavorites': user.favorites});
+            }
+        });
     }
 };
+
+exports.studentFavorites = (req, res) => {
+    const decoded = jwt.verify(req.session.token, config.secret).id;
+    const tutorId = req.query.tid;
+    const tutorObjectId = mongoose.Types.ObjectId(tutorId); // convert tutorId to ObjectId
+    User.findOne({ _id: decoded })
+      .exec((err, user) => {
+        if (err) {
+          return res.status(500).json({ error: err });
+        }
+        const favorites = user.favorites || [];
+        const index = favorites.indexOf(tutorObjectId); // use the ObjectId in the favorites array
+        if (index === -1) {
+          favorites.push(tutorObjectId); // use the ObjectId in the favorites array
+        } else {
+          favorites.splice(index, 1);
+        }
+        User.updateOne(
+          { _id: decoded },
+          { $set: { favorites: favorites } }
+        ).exec((err, result) => {
+            if (err) {
+              return res.status(500).json({ error: err });
+            }
+            res.redirect("/home");
+          });
+      });
+  };
 
 exports.appointmentForm = async (req,res) => {
     const tid = req.body.tid;

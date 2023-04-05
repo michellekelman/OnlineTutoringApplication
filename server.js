@@ -12,6 +12,7 @@ const dbConfig = require("./app/config/db.config");
 const fileUpload = require('express-fileupload');
 
 const app = express();
+const hbs = require("hbs");
 
 // give name of template (html) files
 const path = require("path");
@@ -52,6 +53,15 @@ db.mongoose
         console.error("Connection error", err);
         process.exit();
     });
+
+// for using contains() in hbs
+hbs.registerHelper('contains', function(array, value) {
+    if (array.includes(value)) {
+        return true;
+    } else {
+        return false;
+    }
+});
 
 // routes
 
