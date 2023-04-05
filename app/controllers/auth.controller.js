@@ -4,6 +4,7 @@ const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
 const Tutor = db.tutor;
+const Appointment = db.appointment;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -17,7 +18,7 @@ exports.studentSignup = (req, res) => {
         }
         else if (user != null) {
 
-            return res.render("./student-signup", {message: "Student Sign Up failed. Email is already in use."});
+            return res.render("student-signup", {message: "Student Sign Up failed. Email is already in use."});
         }
         else {
             const user = new User ({
@@ -44,7 +45,7 @@ exports.studentSignin = (req, res) => {
             return;
         }
         else if (!user) {
-            return res.render("./student-login", {message: "Student Login failed. Student account with email does not exist."});
+            return res.render("student-login", {message: "Student Login failed. Student account with email does not exist."});
         }
         else {
             var passwordIsValid = bcrypt.compareSync(
@@ -52,7 +53,7 @@ exports.studentSignin = (req, res) => {
                 user.password
             );
             if (!passwordIsValid) {
-                return res.render("./student-login", {message: "Student Login failed. Incorrect Password."});
+                return res.render("student-login", {message: "Student Login failed. Incorrect Password."});
             }
             var token = jwt.sign({ id: user.id }, config.secret, {
                 expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
@@ -80,7 +81,7 @@ exports.studentProfile = (req, res) => {
             return;
         }
         else if (!user) {
-            return res.render("./home", {message: "Profile does not exist."});
+            return res.render("home-authenticated", {message: "Profile does not exist."});
         }
         else {
             res.render("profile", {'userProfile' : user})
@@ -108,8 +109,42 @@ exports.tutorSignup = (req, res) => {
                 var startval = req.body[starts[i]];
                 var endval = req.body[ends[i]];
                 if ((startval!=="") && (endval!=="")) {
+                    var starthour = parseInt(startval.substring(0,2));
+                    var endhour = parseInt(endval.substring(0,2));
+                    var startmin = startval.substring(3,5);
+                    var endmin = endval.substring(3,5);
+                    var start12 = "";
+                    var end12 = "";
+                    // calculate 12 hour version of start
+                    if (starthour == 0) {
+                        start12 = "12:" + startmin + " AM";
+                    }
+                    else if (starthour < 12) {
+                        start12 = starthour + ":" + startmin + " AM";
+                    }
+                    else if (starthour == 12) {
+                        start12 = "12:" + startmin + " PM";
+                    }
+                    else {
+                        start12 = (starthour-12) + ":" + startmin + " PM";
+                    }
+                    // calculate 12 hour version of end
+                    if (endhour == 0) {
+                        end12 = "12:" + endmin + " AM";
+                    }
+                    else if (endhour < 12) {
+                        end12 = endhour + ":" + endmin + " AM";
+                    }
+                    else if (endhour == 12) {
+                        end12 = "12:" + endmin + " PM";
+                    }
+                    else {
+                        end12 = (endhour-12) + ":" + endmin + " PM";
+                    }
+                    // add to availability array
                     if (endval.localeCompare(startval)>0) {
-                        avail.push({day: days[i], start: startval, end: endval});
+
+                        avail.push({day: days[i], start: start12, end: end12, start24: startval, end24: endval});
                     }
                     else {
                         return res.render("./tutor-signup", {message: "Tutor Sign Up failed. Incorrect availability intervals."});
@@ -156,7 +191,7 @@ exports.tutorSignin = (req, res) => {
             return;
         }
         else if (!tutor) {
-            return res.render("./tutor-login", {message: "Tutor Login failed. Tutor account with email does not exist."});
+            return res.render("tutor-login", {message: "Tutor Login failed. Tutor account with email does not exist."});
         }
         else {
             var passwordIsValid = bcrypt.compareSync(
@@ -164,7 +199,7 @@ exports.tutorSignin = (req, res) => {
                 tutor.password
             );
             if (!passwordIsValid) {
-                return res.render("./tutor-login", {message: "Tutor Login failed. Incorrect Password."});
+                return res.render("tutor-login", {message: "Tutor Login failed. Incorrect Password."});
             }
             var token = jwt.sign({ id: tutor.id }, config.secret, {
                 expiresIn: 86400, // token lasts for 24 hours (or signout, whichever comes first)
@@ -191,7 +226,7 @@ exports.tutorProfile = (req, res) => {
             return;
         }
         else if (!tutor) {
-            return res.render("./home-tutor", {message: "Profile does not exist."});
+            return res.render("home-authernticated-tutor", {message: "Profile does not exist."});
         }
         else {
             res.render("profile-tutor", {'tutorProfile' : tutor});
@@ -258,11 +293,15 @@ exports.searchTutorHome = async (req,res) => {
 };
 
 exports.appointmentForm = async (req,res) => {
-    const tid = req.query.tid;
+    const tid = req.body.tid;
+    const date = req.body.date;
+    var durVal = req.body.duration;
+    const time = req.body.time;
+    const subject = req.body.subject;
     Tutor.findOne({
         _id: tid,
     })
-    .exec((err, tutor) => {
+    .exec(async (err, tutor) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
@@ -270,13 +309,106 @@ exports.appointmentForm = async (req,res) => {
         else if (!tutor) {
             return res.render("home-authenticated", {message: "Profile does not exist."});
         }
+        else if (time!=null) {
+            // create new appointment in database
+            // get student info
+            const decoded = jwt.verify(req.session.token, config.secret).id;
+            var user = await User.findOne({_id: decoded});
+            if (!user) {
+                return res.render("home-authernticated", {message: "Profile does not exist."});
+            }
+            var uid = user.id;
+            var ufn = user.firstName;
+            var uln = user.lastName;
+            var uem = user.email;
+            // get tutor info
+            var tid = tutor.id;
+            var tfn = tutor.firstName;
+            var tln = tutor.lastName;
+            var tem = tutor.email;
+            // get appointment times
+            var durInt = parseInt(durVal);
+            var apstart = new Date(date+"T"+time);
+            var apend = new Date(apstart.getTime() + durInt*60000);
+            var start = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true});
+            var end = apend.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true});
+            var start24 = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false});
+            var end24 = apend.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false});
+            // make sure time is still available *****************************
+            // add appointment to database
+            const appt = new Appointment ({
+                userID: uid,
+                tutorID: tid,
+                userFirstName: ufn,
+                userLastName: uln,
+                userEmail: uem,
+                tutorFirstName: tfn,
+                tutorLastName: tln,
+                tutorEmail: tem,
+                subject: subject,
+                day: date,
+                start: start, 
+                end: end,
+                start24: start24, 
+                end24: end24
+            });
+            Appointment.create(appt);
+            return res.redirect("/home");
+        }
         else {
-            // figure out how to get availability (dates and times) and return
-            res.render("make-appointment", {'tutor': tutor});
+            // reload form
+            var durStr = "";
+            var message = "";
+            // duration defaults
+            if (durVal==="30") {
+                durStr = "30 minutes";
+            }
+            else if (durVal==="60") {
+                durStr = "1 hour";
+            }
+            else if (durVal==="90") {
+                durStr = "1 hour 30 minutes";
+            }
+            else if (durVal==="120") {
+                durStr = "2 hours";
+            }
+            else {
+                durVal = "60";
+                durStr = "1 hour";
+            }
+            // check for date and return availability
+            if (date==="") {
+                message = "Enter a valid date.";
+            }
+            else if (date!=null) {
+                var times = [];
+                const d = new Date(date);
+                const weekdays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+                const weekday = weekdays[d.getDay()];
+                tutor.availability.forEach(element => {
+                    // find availability for given day
+                    if (element.day===weekday) {
+                        var avstart = new Date(date+"T"+element.start24);
+                        var avend = new Date(date+"T"+element.end24);
+                        var durInt = parseInt(durVal);
+                        var apstart = avstart;
+                        var apend = new Date(avstart.getTime() + durInt*60000);
+                        while (avstart<=apstart && apend<=avend) {
+                            // check against upcoming appts ************************************
+                            var start12 = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true});
+                            var end12 = apend.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true});
+                            var start24 = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false});
+                            times.push({'start' : start12, 'end' : end12, 'start24' : start24});
+                            apstart = new Date(apstart.getTime() + 30*60000);
+                            apend = new Date(apend.getTime() + 30*60000);
+                        }
+                    }
+                });
+                if (times.length==0) {
+                    message = "No available times for this date and duration.";
+                }
+            }
+            return res.render("make-appointment", {'tutor': tutor, 'date': date, 'durVal': durVal, 'durStr': durStr, 'message': message, 'times': times});
         }
     });
-};
-
-exports.makeAppointment = async (res,req) => {
-    // add appt to database
 };

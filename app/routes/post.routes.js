@@ -20,7 +20,9 @@ module.exports = function(app) {
 
     app.post("/tutor-login", controller.tutorSignin);
 
-    app.get("/make-appointment", auth.authJwt, controller.makeAppointment);
+    //app.post("/make-appointment", controller.makeAppointment);
+
+    app.post("/make-appointment", auth.authJwt, controller.appointmentForm);
 
     app.post("/logout", controller.signout);
 }

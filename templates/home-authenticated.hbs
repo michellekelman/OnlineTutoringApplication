@@ -102,13 +102,13 @@
                   {{#each this.subjects}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
                   <b>Availability</b><br>
                   {{#each this.availability}}
-                    {{this.day}} {{this.start}}-{{this.end}}{{#unless @last}},{{/unless}} 
+                    {{this.day}} {{this.start}} - {{this.end}}{{#unless @last}}<br>{{/unless}} 
                   {{/each}}<br>
                   <b>About Me</b><br>
                   {{aboutMe}}
                 </p>
-                <form class="input-group justify-content-center" action="/make-appointment" method="GET">
-                  <button name="tid" type="submit" class="btn btn-secondary" value="{{_id}}">Make Appointment</button>
+                <form class="input-group justify-content-center" action="/make-appointment" method="POST">
+                  <button name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Make Appointment</button>
                 </form>
               </div>
             {{/each}}

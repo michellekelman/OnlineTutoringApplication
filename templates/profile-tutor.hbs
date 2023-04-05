@@ -75,7 +75,7 @@
                           <tr>
                               <td>Subjects</td>
                               {{#if subjects}}
-                              <td id="subjects">{{#each this.subjects}} {{this}}<br> {{/each}}</td>
+                              <td id="subjects">{{#each this.subjects}} {{this}}{{#unless @last}},{{/unless}} {{/each}}</td>
                               {{/if}}
                               {{#unless subjects}}
                               <td id="subjects">Add subjects to see them listed here!</td>
@@ -86,7 +86,7 @@
                               {{#if availability}}
                               <td id="availability">
                                 {{#each this.availability}}
-                                  {{this.day}} {{this.start}}-{{this.end}}{{#unless @last}},{{/unless}} 
+                                  {{this.day}} {{this.start}} - {{this.end}}{{#unless @last}}<br>{{/unless}} 
                                 {{/each}}<br>
                               </td>
                               {{/if}}

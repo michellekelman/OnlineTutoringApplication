@@ -38,7 +38,7 @@ module.exports = function(app) {
 
     app.get("/profile", auth.authJwt, controller.studentProfile);
 
-    app.get("/make-appointment", auth.authJwt, controller.appointmentForm);
+    //app.get("/make-appointment", auth.authJwt, controller.appointmentForm);
 
     app.get("/home-tutor", auth.authJwt, (req,res)=>{
         res.render("home-authenticated-tutor")
