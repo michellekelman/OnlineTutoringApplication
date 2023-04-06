@@ -332,9 +332,9 @@ exports.studentFavorites = (req, res) => {
               return res.status(500).json({ error: err });
             }
             res.redirect("/home");
-          });
-      });
-  };
+        });
+    });
+};
 
 exports.appointmentForm = async (req,res) => {
     const tid = req.body.tid;
@@ -379,6 +379,36 @@ exports.appointmentForm = async (req,res) => {
             var start24 = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false});
             var end24 = apend.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false});
             // make sure time is still available *****************************
+            const allAppts = await Appointment.find({$and: [{tutorID: tutor.id}, {day: date}]});
+            var valid = true;
+            allAppts.forEach(appt => {
+                var curstart = new Date(date+"T"+appt.start24);
+                var curend = new Date(date+"T"+appt.end24);
+                if (!(apend<=curstart || curend<=apstart)) {
+                    valid = false;
+                }
+            });
+            if (!valid) {
+                var message = "Time unavailable. Please check availability again.";
+                var durStr = "";
+                if (durVal==="30") {
+                    durStr = "30 minutes";
+                }
+                else if (durVal==="60") {
+                    durStr = "1 hour";
+                }
+                else if (durVal==="90") {
+                    durStr = "1 hour 30 minutes";
+                }
+                else if (durVal==="120") {
+                    durStr = "2 hours";
+                }
+                else {
+                    durVal = "60";
+                    durStr = "1 hour";
+                }
+                return res.render("make-appointment", {'tutor': tutor, 'date': date, 'durVal': durVal, 'durStr': durStr, 'message': message, 'times': times});
+            }
             // add appointment to database
             const appt = new Appointment ({
                 userID: uid,
@@ -429,6 +459,7 @@ exports.appointmentForm = async (req,res) => {
                 const d = new Date(date);
                 const weekdays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
                 const weekday = weekdays[d.getDay()];
+                const allAppts = await Appointment.find({$and: [{tutorID: tutor.id}, {day: date}]});
                 tutor.availability.forEach(element => {
                     // find availability for given day
                     if (element.day===weekday) {
@@ -438,11 +469,21 @@ exports.appointmentForm = async (req,res) => {
                         var apstart = avstart;
                         var apend = new Date(avstart.getTime() + durInt*60000);
                         while (avstart<=apstart && apend<=avend) {
-                            // check against upcoming appts ************************************
-                            var start12 = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true});
-                            var end12 = apend.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true});
-                            var start24 = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false});
-                            times.push({'start' : start12, 'end' : end12, 'start24' : start24});
+                            // check against upcoming appts
+                            var valid = true;
+                            allAppts.forEach(appt => {
+                                var curstart = new Date(date+"T"+appt.start24);
+                                var curend = new Date(date+"T"+appt.end24);
+                                if (!(apend<=curstart || curend<=apstart)) {
+                                    valid = false;
+                                }
+                            });
+                            if (valid) {
+                                var start12 = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true});
+                                var end12 = apend.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true});
+                                var start24 = apstart.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false});
+                                times.push({'start' : start12, 'end' : end12, 'start24' : start24});
+                            }
                             apstart = new Date(apstart.getTime() + 30*60000);
                             apend = new Date(apend.getTime() + 30*60000);
                         }
