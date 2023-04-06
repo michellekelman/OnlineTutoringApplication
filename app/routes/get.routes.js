@@ -36,9 +36,9 @@ module.exports = function(app) {
 
     app.get("/home-search", auth.authJwt, controller.searchTutorHome);
 
-    app.get("/profile", auth.authJwt, controller.studentProfile);
+    app.get("/favorites", auth.authJwt, controller.favoritesList);
 
-    app.get("/modify-favorites", auth.authJwt, controller.studentFavorites);
+    app.get("/profile", auth.authJwt, controller.studentProfile);
 
     app.get("/home-tutor", auth.authJwt, (req,res)=>{
         res.render("home-authenticated-tutor")

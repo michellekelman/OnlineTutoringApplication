@@ -308,9 +308,9 @@ exports.searchTutorHome = async (req,res) => {
     }
 };
 
-exports.studentFavorites = (req, res) => {
+exports.modifyFavoritesSearch = (req, res) => {
     const decoded = jwt.verify(req.session.token, config.secret).id;
-    const tutorId = req.query.tid;
+    const tutorId = req.body.tid;
     const tutorObjectId = mongoose.Types.ObjectId(tutorId); // convert tutorId to ObjectId
     User.findOne({ _id: decoded })
       .exec((err, user) => {
@@ -333,6 +333,64 @@ exports.studentFavorites = (req, res) => {
             }
             res.redirect("/home");
         });
+    });
+};
+
+exports.modifyFavoritesList = (req, res) => {
+    const decoded = jwt.verify(req.session.token, config.secret).id;
+    const tutorId = req.body.tid;
+    const tutorObjectId = mongoose.Types.ObjectId(tutorId); // convert tutorId to ObjectId
+    User.findOne({ _id: decoded })
+      .exec((err, user) => {
+        if (err) {
+          return res.status(500).json({ error: err });
+        }
+        const favorites = user.favorites || [];
+        const index = favorites.indexOf(tutorObjectId); // use the ObjectId in the favorites array
+        if (index === -1) {
+          favorites.push(tutorObjectId); // use the ObjectId in the favorites array
+        } else {
+          favorites.splice(index, 1);
+        }
+        User.updateOne(
+          { _id: decoded },
+          { $set: { favorites: favorites } }
+        ).exec((err, result) => {
+            if (err) {
+              return res.status(500).json({ error: err });
+            }
+            res.redirect("/favorites");
+        });
+    });
+};
+
+exports.favoritesList = (req, res) => {
+    const decoded = jwt.verify(req.session.token, config.secret).id;
+    User.findOne({
+        _id: decoded,
+    })
+    .exec((err, user) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        } else if (!user) {
+            return res.render("./home", {message: "Profile does not exist."});
+        } else {
+            const favoriteTutors = user.favorites;
+            Tutor.find({_id: {$in: favoriteTutors}})
+            .exec((err, tutors) => {
+                if (err) {
+                    res.status(500).send({ message: err });
+                    return;
+                } else {
+                    var message = "";
+                    if (tutors.length == 0) {
+                        message = "Add a tutor as a favorite to see them listed here! Use the searchbar to continue.";
+                    }
+                    res.render("home-authenticated", {'favtutors': tutors, 'allFavorites': user.favorites, 'message': message})
+                }
+            });
+        }
     });
 };
 

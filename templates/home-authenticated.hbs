@@ -82,11 +82,18 @@
         <!-- Tutor Listing and Upcoming Appointments -->
 
         <div class="container main-content">
-          <div class="row search col-lg-6">
-            <form class="input-group col" action="/home-search" method="GET">
-              <input name="query" type="searchbar" class="form-control rounded" placeholder="Search for Tutors" aria-label="Search" aria-describedby="search-addon" />
-              <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-            </form>
+          <div class="row search justify-content-center">
+            <div class="col-6">
+              <form class="input-group" action="/home-search" method="GET">
+                <input name="query" type="searchbar" class="form-control rounded" placeholder="Search for Tutors" aria-label="Search" aria-describedby="search-addon"/>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+              </form>
+            </div>
+            <div class="col-2">
+              <form class="input-group" action="/favorites" method="GET">
+                <button type="submit" class="btn btn-primary">Favorites</button>
+              </form>
+            </div>
           </div>
           <!-- Three columns of text below the carousel -->
           <div class="row tutors">
@@ -109,32 +116,42 @@
                 </p>
                 <div class="mb-2">
                   {{#if (contains ../allFavorites _id)}}
-                    <form class="justify-content-center" action="/modify-favorites" method="GET">
+                    <form class="justify-content-center" action="/modify-favorites" method="POST">
                       <button id="remove-favorite-btn-{{_id}}" name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Remove from Favorites</button>
-                      <script>
-                        const removeFavoriteBtn = document.getElementById('remove-favorite-btn-{{_id}}');
-                        favoriteBtn.addEventListener('click', () => {
-                          if (favoriteBtn.innerText === 'Remove from Favorites') {
-                            removeFavoriteBtn.innerText = 'Add to Favorites';
-                          } else {
-                            removeFavoriteBtn.innerText = 'Remove from Favorites';
-                          }
-                        });
-                      </script>
                     </form>
                   {{else}}
-                    <form class="justify-content-center" action="/modify-favorites" method="GET">
+                    <form class="justify-content-center" action="/modify-favorites" method="POST">
                       <button id="add-favorite-btn-{{_id}}" name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Add to Favorites</button>
-                      <script>
-                        const addFavoriteBtn = document.getElementById('add-favorite-btn-{{_id}}');
-                        favoriteBtn.addEventListener('click', () => {
-                          if (favoriteBtn.innerText === 'Add to Favorites') {
-                            addFavoriteBtn.innerText = 'Remove from Favorites';
-                          } else {
-                            addFavoriteBtn.innerText = 'Add to Favorites';
-                          }
-                        });
-                      </script>
+                    </form>
+                  {{/if}}
+                </div>
+                <form class="input-group justify-content-center" action="/make-appointment" method="POST">
+                  <button name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Make Appointment</button>
+                </form>
+              </div>
+            {{/each}}
+            {{#each favtutors}}
+              <div class="col-lg-4">
+                <img src="photos/{{_id}}{{profilePic}}" class="rounded-circle img-fluid" alt="tutor_img">
+                <h2 class="fw-normal">{{firstName}} {{lastName}}</h2>
+                <p>
+                  <b>Subjects</b><br>
+                  {{#each this.subjects}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
+                  <b>Availability</b><br>
+                  {{#each this.availability}}
+                    {{this.day}} {{this.start}} - {{this.end}}{{#unless @last}}<br>{{/unless}} 
+                  {{/each}}<br>
+                  <b>About Me</b><br>
+                  {{aboutMe}}
+                </p>
+                <div class="mb-2">
+                  {{#if (contains ../allFavorites _id)}}
+                    <form class="justify-content-center" action="/modify-favorites-list" method="POST">
+                      <button id="remove-favorite-btn-{{_id}}" name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Remove from Favorites</button>
+                    </form>
+                  {{else}}
+                    <form class="justify-content-center" action="/modify-favorites-list" method="POST">
+                      <button id="add-favorite-btn-{{_id}}" name="tid" type="submit" class="btn btn-secondary" value={{_id}}>Add to Favorites</button>
                     </form>
                   {{/if}}
                 </div>
