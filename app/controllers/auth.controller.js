@@ -407,7 +407,7 @@ exports.appointmentForm = async (req,res) => {
                     durVal = "60";
                     durStr = "1 hour";
                 }
-                return res.render("make-appointment", {'tutor': tutor, 'date': date, 'durVal': durVal, 'durStr': durStr, 'message': message, 'times': times});
+                return res.render("make-appointment", {'tutor': tutor, 'date': date, 'durVal': durVal, 'durStr': durStr, 'message': message, 'message2': message2, 'times': times});
             }
             // add appointment to database
             const appt = new Appointment ({
@@ -433,6 +433,8 @@ exports.appointmentForm = async (req,res) => {
             // reload form
             var durStr = "";
             var message = "";
+            var message2 = "";
+            var times = [];
             // duration defaults
             if (durVal==="30") {
                 durStr = "30 minutes";
@@ -455,7 +457,6 @@ exports.appointmentForm = async (req,res) => {
                 message = "Enter a valid date.";
             }
             else if (date!=null) {
-                var times = [];
                 const d = new Date(date);
                 const weekdays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
                 const weekday = weekdays[d.getDay()];
@@ -492,8 +493,11 @@ exports.appointmentForm = async (req,res) => {
                 if (times.length==0) {
                     message = "No available times for this date and duration.";
                 }
+                else {
+                    message2 = "Choose an available time."
+                }
             }
-            return res.render("make-appointment", {'tutor': tutor, 'date': date, 'durVal': durVal, 'durStr': durStr, 'message': message, 'times': times});
+            return res.render("make-appointment", {'tutor': tutor, 'date': date, 'durVal': durVal, 'durStr': durStr, 'message': message, 'message2': message2, 'times': times});
         }
     });
 };
