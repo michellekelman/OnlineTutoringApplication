@@ -50,17 +50,17 @@
                 <div class="card mb-5 border-0" style="border-radius: 15px">
                   {{#each userProfile}}
                       {{#if firstName}}
-                        <table>
+                        <table class="m-3">
                             <tr>
-                                <td>First Name</td>
+                                <td><b>First Name</b></td>
                                 <td id="firstName">{{firstName}}</td>
                             </tr>
                             <tr>
-                                <td>Last Name</td>
+                                <td><b>Last Name</b></td>
                                 <td id="lastName">{{lastName}}</td>
                                 </tr>
                             <tr>
-                                <td>Email</td>
+                                <td><b>Email</b></td>
                                 <td id="email">{{email}}</td>
                             </tr>
                             <!-- <tr>
@@ -75,7 +75,7 @@
                                 {{/unless}}
                             </tr> -->
                             <tr>
-                                <td>Tutoring Hours</td>
+                                <td><b>Tutoring Hours</b></td>
                                 <td id="tutoringHours">{{tutoringHours}}</td>
                             </tr>
                         </table>

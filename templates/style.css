@@ -181,7 +181,7 @@ td {
   }
 }
 
-@media (max-width: 66em) {
+@media (max-width: 70em) {
   .title {
     justify-content: center;
   }

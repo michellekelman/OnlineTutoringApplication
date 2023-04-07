@@ -50,21 +50,21 @@
                 <div class="card mb-5 border-0" style="border-radius: 15px">
                   {{#each tutorProfile}}
                     {{#if firstName}}
-                      <table>
+                      <table class="m-3">
                           <tr>
-                              <td>First Name</td>
+                              <td><b>First Name</b></td>
                               <td id="firstName">{{firstName}}</td>
                           </tr>
                           <tr>
-                              <td>Last Name</td>
+                              <td><b>Last Name</b></td>
                               <td id="lastName">{{lastName}}</td>
                               </tr>
                           <tr>
-                              <td>Email</td>
+                              <td><b>Email</b></td>
                               <td id="email">{{email}}</td>
                           </tr>
                           <tr>
-                              <td>About Me</td>
+                              <td><b>About Me</b></td>
                               {{#if aboutMe}}
                               <td id="aboutMe">{{aboutMe}}</td>
                               {{/if}}
@@ -73,7 +73,7 @@
                               {{/unless}}
                           </tr>
                           <tr>
-                              <td>Subjects</td>
+                              <td><b>Subjects</b></td>
                               {{#if subjects}}
                               <td id="subjects">{{#each this.subjects}} {{this}}{{#unless @last}},{{/unless}} {{/each}}</td>
                               {{/if}}
@@ -82,7 +82,7 @@
                               {{/unless}}
                           </tr>
                           <tr>
-                              <td>Availability</td>
+                              <td><b>Availability</b></td>
                               {{#if availability}}
                               <td id="availability">
                                 {{#each this.availability}}
@@ -95,7 +95,7 @@
                               {{/unless}}
                           </tr>
                           <tr>
-                              <td>Tutoring Hours</td>
+                              <td><b>Tutoring Hours</b></td>
                               <td id="tutoringHours">{{tutoringHours}}</td>
                           </tr>
                       </table>
