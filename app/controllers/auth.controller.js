@@ -276,6 +276,15 @@ exports.searchTutor = async (req,res) => {
 
 exports.searchTutorHome = async (req,res) => {
     const decoded = jwt.verify(req.session.token, config.secret).id;
+
+    // loads upcoming appointments
+    const d = new Date();
+    const currentYear = d.getFullYear();
+    const currentMonth = d.getMonth() + 1;
+    const currentDate = d.getDate();
+    const date = currentYear + "-" + currentMonth + "-" + currentDate;
+    const appointments = await Appointment.find({ userID : decoded , date : {$gt : new Date(date)}});
+
     const queryString = req.query.query;
     var queryStrings = [];
     if (queryString != null) {
@@ -302,7 +311,7 @@ exports.searchTutorHome = async (req,res) => {
                 res.status(500).send({ message: err });
                 return;
             } else {
-                res.render("home-authenticated", {'tutors': allTutors, 'allFavorites': user.favorites});
+                res.render("home-authenticated", {'tutors': allTutors, 'allFavorites': user.favorites, 'upcomingAppts': appointments});
             }
         });
     }
@@ -417,7 +426,7 @@ exports.appointmentForm = async (req,res) => {
             const decoded = jwt.verify(req.session.token, config.secret).id;
             var user = await User.findOne({_id: decoded});
             if (!user) {
-                return res.render("home-authernticated", {message: "Profile does not exist."});
+                return res.render("home-authenticated", {message: "Profile does not exist."});
             }
             var uid = user.id;
             var ufn = user.firstName;
@@ -559,3 +568,17 @@ exports.appointmentForm = async (req,res) => {
         }
     });
 };
+
+exports.homeTutor = async (req, res) => {
+    const decoded = jwt.verify(req.session.token, config.secret).id;
+
+    // loads upcoming appointments
+    const d = new Date();
+    const currentYear = d.getFullYear();
+    const currentMonth = d.getMonth() + 1;
+    const currentDate = d.getDate();
+    const date = currentYear + "-" + currentMonth + "-" + currentDate;
+    const appointments = await Appointment.find({ tutorID : decoded , date : {$gt : new Date(date)}});
+
+    res.render("home-authenticated-tutor", {'upcomingAppts': appointments});
+}

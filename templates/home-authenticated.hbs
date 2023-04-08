@@ -169,9 +169,9 @@
             <div class="col-md">
               <h2 class="fw-normal">Upcoming Appointments</h2>
               <br>
-              <p class="lead">Monday, February 20 - Rhetoric with Student</p>
-              <p class="lead">Wednesday, February 22 - Art History with Student</p>
-              <p class="lead">Friday, March 3 - Calculus II with Student</p>
+              {{#each upcomingAppts}}
+              <p class="lead"> {{day}} {{start}} - {{end}} {{#if (subject)}} {{subject}} {{/if}} with {{tutorFirstName}} {{tutorLastName}} </p>
+              {{/each}}
             </div>
           </div>
         </div>

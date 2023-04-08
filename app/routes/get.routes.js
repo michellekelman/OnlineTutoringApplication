@@ -40,9 +40,7 @@ module.exports = function(app) {
 
     app.get("/profile", auth.authJwt, controller.studentProfile);
 
-    app.get("/home-tutor", auth.authJwt, (req,res)=>{
-        res.render("home-authenticated-tutor")
-    });
+    app.get("/home-tutor", auth.authJwt, controller.homeTutor);
 
     app.get("/profile-tutor", auth.authJwt, controller.tutorProfile);
 
