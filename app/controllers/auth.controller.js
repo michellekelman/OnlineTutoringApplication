@@ -280,10 +280,10 @@ exports.searchTutorHome = async (req,res) => {
     // loads upcoming appointments
     const d = new Date();
     const currentYear = d.getFullYear();
-    const currentMonth = d.getMonth() + 1;
-    const currentDate = d.getDate();
+    const currentMonth = ('0' + (d.getMonth() + 1)).slice(-2);
+    const currentDate = ('0' + d.getDate()).slice(-2);
     const date = currentYear + "-" + currentMonth + "-" + currentDate;
-    const appointments = await Appointment.find({ userID : decoded , date : {$gt : new Date(date)}});
+    const appointments = await Appointment.find({ userID : decoded , day : {$gte : date}}).sort({day : 1, start24 : 1});
 
     const queryString = req.query.query;
     var queryStrings = [];
@@ -311,6 +311,7 @@ exports.searchTutorHome = async (req,res) => {
                 res.status(500).send({ message: err });
                 return;
             } else {
+                //res.status(200).send(appointments);
                 res.render("home-authenticated", {'tutors': allTutors, 'allFavorites': user.favorites, 'upcomingAppts': appointments});
             }
         });
@@ -575,10 +576,10 @@ exports.homeTutor = async (req, res) => {
     // loads upcoming appointments
     const d = new Date();
     const currentYear = d.getFullYear();
-    const currentMonth = d.getMonth() + 1;
-    const currentDate = d.getDate();
+    const currentMonth = ('0' + (d.getMonth() + 1)).slice(-2);
+    const currentDate = ('0' + d.getDate()).slice(-2);
     const date = currentYear + "-" + currentMonth + "-" + currentDate;
-    const appointments = await Appointment.find({ tutorID : decoded , date : {$gt : new Date(date)}});
+    const appointments = await Appointment.find({ tutorID : decoded , day : {$gte : date}}).sort({day : 1, start24 : 1});
 
     res.render("home-authenticated-tutor", {'upcomingAppts': appointments});
 }
