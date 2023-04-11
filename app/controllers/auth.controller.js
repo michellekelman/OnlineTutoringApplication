@@ -283,7 +283,11 @@ exports.searchTutorHome = async (req,res) => {
     const currentMonth = ('0' + (d.getMonth() + 1)).slice(-2);
     const currentDate = ('0' + d.getDate()).slice(-2);
     const date = currentYear + "-" + currentMonth + "-" + currentDate;
-    const appointments = await Appointment.find({ userID : decoded , day : {$gte : date}}).sort({day : 1, start24 : 1});
+    const currentHour = ('0' + d.getHours()).slice(-2);
+    const currentMinute = ('0' + d.getMinutes()).slice(-2);
+    const time = currentHour + ":" + currentMinute;
+    const todayAppointments = await Appointment.find({ userID : decoded , day : {$eq : date}, end24 : {$gte : time}}).sort({start24 : 1});
+    const appointments = await Appointment.find({ userID : decoded , day : {$gt : date}}).sort({day : 1, start24 : 1});
 
     const queryString = req.query.query;
     var queryStrings = [];
@@ -312,7 +316,7 @@ exports.searchTutorHome = async (req,res) => {
                 return;
             } else {
                 //res.status(200).send(appointments);
-                res.render("home-authenticated", {'tutors': allTutors, 'allFavorites': user.favorites, 'upcomingAppts': appointments});
+                res.render("home-authenticated", {'tutors': allTutors, 'allFavorites': user.favorites, 'todayAppts' : todayAppointments, 'upcomingAppts': appointments});
             }
         });
     }
@@ -579,7 +583,11 @@ exports.homeTutor = async (req, res) => {
     const currentMonth = ('0' + (d.getMonth() + 1)).slice(-2);
     const currentDate = ('0' + d.getDate()).slice(-2);
     const date = currentYear + "-" + currentMonth + "-" + currentDate;
-    const appointments = await Appointment.find({ tutorID : decoded , day : {$gte : date}}).sort({day : 1, start24 : 1});
+    const currentHour = ('0' + d.getHours()).slice(-2);
+    const currentMinute = ('0' + d.getMinutes()).slice(-2);
+    const time = currentHour + ":" + currentMinute;
+    const todayAppointments = await Appointment.find({ tutorID : decoded , day : {$eq : date}, end24 : {$gte : time}}).sort({start24 : 1});
+    const appointments = await Appointment.find({ tutorID : decoded , day : {$gt : date}}).sort({day : 1, start24 : 1});
 
-    res.render("home-authenticated-tutor", {'upcomingAppts': appointments});
+    res.render("home-authenticated-tutor", {'todayAppts' : todayAppointments, 'upcomingAppts': appointments});
 }
