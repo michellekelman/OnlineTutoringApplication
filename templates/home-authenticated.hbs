@@ -27,7 +27,7 @@
                 <button type="submit" class="btn btn-link">Profile</button>
               </div>
             </form>
-            <li class="nav-item"><a href="#" class="nav-link">Appointments</a></li>
+            <!-- <li class="nav-item"><a href="#" class="nav-link">Appointments</a></li> -->
             <form class="card-body px-3" action="/logout" method="POST">
               <div class="form-group text-center">
                 <button type="submit" class="btn btn-link">Logout</button>
@@ -167,16 +167,53 @@
           <!-- Upcoming Appointments (signed in) -->
           <div class="row upcoming">
             <div class="col-md">
-              <h2 class="fw-normal">Upcoming Appointments</h2>
-              <br>
-              {{#each todayAppts}}
-              <p class="lead"> {{day}} {{start}} - {{end}} with {{tutorFirstName}} {{tutorLastName}} </p>
-              <p class="subject">{{#if subject}} Subject: {{subject}} {{/if}}</p>
-              {{/each}}
-              {{#each upcomingAppts}}
-              <p class="lead"> {{day}} {{start}} - {{end}} with {{tutorFirstName}} {{tutorLastName}} </p>
-              <p class="subject">{{#if subject}} Subject: {{subject}} {{/if}}</p>
-              {{/each}}
+              <h2 class="fw-normal mb-3">Upcoming Appointments</h2>
+              <div class="d-flex row justify-content-center mb-5">
+                {{#each todayAppts}}
+                  <div class="col-lg-7">
+                    <div class="card text-left m-2 border-0">
+                      <h4 class="card-header p-3 border-0">{{day}}<br>{{start}} - {{end}}</h4>
+                      <div class="card-body">
+                        <h4 class="card-title">{{tutorFirstName}} {{tutorLastName}}</h4>
+                        <p class="card-text">
+                          <b>Email Address</b><br>
+                          {{tutorEmail}}<br>
+                          {{#if subject}}
+                            <b>Subject</b><br>
+                            {{subject}}
+                          {{/if}}
+                        </p>
+                        {{#if meetingLink}}
+                          <a href="#" class="btn btn-primary">Join Meeting</a>
+                        {{/if}}
+                        <a href="#" class="btn btn-primary">Cancel Appointment</a>
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+                {{#each upcomingAppts}}
+                  <div class="col-lg-7">
+                    <div class="card text-left m-2 border-0">
+                      <h4 class="card-header p-3 border-0">{{day}}<br>{{start}} - {{end}}</h4>
+                      <div class="card-body">
+                        <h4 class="card-title">{{tutorFirstName}} {{tutorLastName}}</h4>
+                        <p class="card-text">
+                          <b>Email Address</b><br>
+                          {{tutorEmail}}<br>
+                          {{#if subject}}
+                            <b>Subject</b><br>
+                            {{subject}}
+                          {{/if}}
+                        </p>
+                        {{#if meetingLink}}
+                          <a href="#" class="btn btn-primary">Join Meeting</a>
+                        {{/if}}
+                        <a href="#" class="btn btn-primary">Cancel Appointment</a>
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
             </div>
           </div>
         </div>

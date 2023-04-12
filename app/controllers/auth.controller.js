@@ -288,7 +288,26 @@ exports.searchTutorHome = async (req,res) => {
     const time = currentHour + ":" + currentMinute;
     const todayAppointments = await Appointment.find({ userID : decoded , day : {$eq : date}, end24 : {$gte : time}}).sort({start24 : 1});
     const appointments = await Appointment.find({ userID : decoded , day : {$gt : date}}).sort({day : 1, start24 : 1});
-
+    
+    // reformat appointment dates
+    var today = []
+    var upcoming = []
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var today = new Date();
+    var offset = -(today.getTimezoneOffset()/60)
+    todayAppointments.forEach(element => {
+        console.log(element.day);
+    });
+    appointments.forEach(element => {
+        // console.log(element.day);
+        var newDate = new Date(element.day);
+        newDate = new Date(newDate.getTime() + (newDate.getTimezoneOffset()*60*1000))
+        var newDay = days[newDate.getDay()] + ', ' + months[newDate.getMonth()] + ' ' + newDate.getDate() + ', ' + newDate.getFullYear();
+        // console.log(newDay);
+        element.day = newDay;
+    });
+    
     const queryString = req.query.query;
     var queryStrings = [];
     if (queryString != null) {
@@ -588,6 +607,25 @@ exports.homeTutor = async (req, res) => {
     const time = currentHour + ":" + currentMinute;
     const todayAppointments = await Appointment.find({ tutorID : decoded , day : {$eq : date}, end24 : {$gte : time}}).sort({start24 : 1});
     const appointments = await Appointment.find({ tutorID : decoded , day : {$gt : date}}).sort({day : 1, start24 : 1});
+
+    // reformat appointment dates
+    var today = []
+    var upcoming = []
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var today = new Date();
+    var offset = -(today.getTimezoneOffset()/60)
+    todayAppointments.forEach(element => {
+        console.log(element.day);
+    });
+    appointments.forEach(element => {
+        // console.log(element.day);
+        var newDate = new Date(element.day);
+        newDate = new Date(newDate.getTime() + (newDate.getTimezoneOffset()*60*1000))
+        var newDay = days[newDate.getDay()] + ', ' + months[newDate.getMonth()] + ' ' + newDate.getDate() + ', ' + newDate.getFullYear();
+        // console.log(newDay);
+        element.day = newDay;
+    });
 
     res.render("home-authenticated-tutor", {'todayAppts' : todayAppointments, 'upcomingAppts': appointments});
 }
