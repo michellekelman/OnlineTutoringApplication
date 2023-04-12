@@ -97,8 +97,8 @@
           </div>
           <!-- Three columns of text below the carousel -->
           <div class="row tutors">
-            {{#if message}}
-                <h5 class="alert alert-danger mt-4">{{message}}</h4>
+            {{#if message1}}
+                <h5 class="alert alert-danger mt-4">{{message1}}</h4>
             {{/if}}
             {{#each tutors}}
               <div class="col-lg-4">
@@ -168,6 +168,9 @@
           <div class="row upcoming">
             <div class="col-md">
               <h2 class="fw-normal mb-3">Upcoming Appointments</h2>
+              {{#if message2}}
+                <p class="lead">{{message2}}</p>
+              {{/if}}
               <div class="d-flex row justify-content-center mb-5">
                 {{#each todayAppts}}
                   <div class="col-lg-7">

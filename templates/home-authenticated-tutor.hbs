@@ -82,6 +82,9 @@
           <div class="row upcoming">
             <div class="col-md">
               <h2 class="fw-normal mb-3">Upcoming Appointments</h2>
+              {{#if message}}
+                <p class="lead">{{message}}</p>
+              {{/if}}
               <div class="d-flex row justify-content-center mb-5">
                 {{#each todayAppts}}
                   <div class="col-lg-7">
