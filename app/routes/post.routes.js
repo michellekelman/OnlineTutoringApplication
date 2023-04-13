@@ -20,11 +20,11 @@ module.exports = function(app) {
 
     app.post("/tutor-login", controller.tutorSignin);
 
-    app.post("/modify-favorites", auth.authJwt, controller.modifyFavoritesSearch);
+    app.post("/modify-favorites", auth.authJwtUser, controller.modifyFavoritesSearch);
 
-    app.post("/modify-favorites-list", auth.authJwt, controller.modifyFavoritesList);
+    app.post("/modify-favorites-list", auth.authJwtUser, controller.modifyFavoritesList);
 
-    app.post("/make-appointment", auth.authJwt, controller.appointmentForm);
+    app.post("/make-appointment", auth.authJwtUser, controller.appointmentForm);
 
     app.post("/logout", controller.signout);
 }

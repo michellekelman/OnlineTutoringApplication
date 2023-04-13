@@ -32,17 +32,17 @@ module.exports = function(app) {
         res.render("tutor-login")
     });
 
-    app.get("/home", auth.authJwt, controller.searchTutorHome);
+    app.get("/home", auth.authJwtUser, controller.searchTutorHome);
 
-    app.get("/home-search", auth.authJwt, controller.searchTutorHome);
+    app.get("/home-search", auth.authJwtUser, controller.searchTutorHome);
 
-    app.get("/favorites", auth.authJwt, controller.favoritesList);
+    app.get("/favorites", auth.authJwtUser, controller.favoritesList);
 
-    app.get("/profile", auth.authJwt, controller.studentProfile);
+    app.get("/profile", auth.authJwtUser, controller.studentProfile);
 
-    app.get("/home-tutor", auth.authJwt, controller.homeTutor);
+    app.get("/home-tutor", auth.authJwtTutor, controller.homeTutor);
 
-    app.get("/profile-tutor", auth.authJwt, controller.tutorProfile);
+    app.get("/profile-tutor", auth.authJwtTutor, controller.tutorProfile);
 
     app.get("/logout", (req,res)=>{
         res.redirect("/")
