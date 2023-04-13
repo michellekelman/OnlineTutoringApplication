@@ -288,7 +288,30 @@ exports.searchTutorHome = async (req,res) => {
     const time = currentHour + ":" + currentMinute;
     const todayAppointments = await Appointment.find({ userID : decoded , day : {$eq : date}, end24 : {$gte : time}}).sort({start24 : 1});
     const appointments = await Appointment.find({ userID : decoded , day : {$gt : date}}).sort({day : 1, start24 : 1});
-
+    
+    // reformat appointment dates
+    var today = []
+    var upcoming = []
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var today = new Date();
+    var offset = -(today.getTimezoneOffset()/60)
+    todayAppointments.forEach(element => {
+        console.log(element.day);
+    });
+    appointments.forEach(element => {
+        // console.log(element.day);
+        var newDate = new Date(element.day);
+        newDate = new Date(newDate.getTime() + (newDate.getTimezoneOffset()*60*1000))
+        var newDay = days[newDate.getDay()] + ', ' + months[newDate.getMonth()] + ' ' + newDate.getDate() + ', ' + newDate.getFullYear();
+        // console.log(newDay);
+        element.day = newDay;
+    });
+    var message2 = "";
+    if ((!todayAppointments || todayAppointments.length === 0) && (!appointments || appointments.length === 0)) {
+        message2 = "No appointments scheduled. To schedule an appointment, select a tutor above.";
+    }
+    
     const queryString = req.query.query;
     var queryStrings = [];
     if (queryString != null) {
@@ -304,7 +327,8 @@ exports.searchTutorHome = async (req,res) => {
     });
     const allTutors = await Tutor.find({$or: [{$or: allFirst}, {$or: allLast}, {$or: allSubject}]});
     if(!allTutors || allTutors.length === 0) {
-        return res.render("home-authenticated", {message: "No tutors found."});
+        // return res.render("home-authenticated", {message: "No tutors found."});
+        return res.render("home-authenticated", {'todayAppts' : todayAppointments, 'upcomingAppts': appointments, 'message1': "No tutors found.", 'message2': message2})
     }
     else {
         User.findOne({
@@ -316,7 +340,7 @@ exports.searchTutorHome = async (req,res) => {
                 return;
             } else {
                 //res.status(200).send(appointments);
-                res.render("home-authenticated", {'tutors': allTutors, 'allFavorites': user.favorites, 'todayAppts' : todayAppointments, 'upcomingAppts': appointments});
+                res.render("home-authenticated", {'tutors': allTutors, 'allFavorites': user.favorites, 'todayAppts' : todayAppointments, 'upcomingAppts': appointments, 'message2': message2});
             }
         });
     }
@@ -378,8 +402,44 @@ exports.modifyFavoritesList = (req, res) => {
     });
 };
 
-exports.favoritesList = (req, res) => {
+exports.favoritesList = async (req, res) => {
     const decoded = jwt.verify(req.session.token, config.secret).id;
+
+    // loads upcoming appointments
+    const d = new Date();
+    const currentYear = d.getFullYear();
+    const currentMonth = ('0' + (d.getMonth() + 1)).slice(-2);
+    const currentDate = ('0' + d.getDate()).slice(-2);
+    const date = currentYear + "-" + currentMonth + "-" + currentDate;
+    const currentHour = ('0' + d.getHours()).slice(-2);
+    const currentMinute = ('0' + d.getMinutes()).slice(-2);
+    const time = currentHour + ":" + currentMinute;
+    const todayAppointments = await Appointment.find({ userID : decoded , day : {$eq : date}, end24 : {$gte : time}}).sort({start24 : 1});
+    const appointments = await Appointment.find({ userID : decoded , day : {$gt : date}}).sort({day : 1, start24 : 1});
+    
+    // reformat appointment dates
+    var today = []
+    var upcoming = []
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var today = new Date();
+    var offset = -(today.getTimezoneOffset()/60)
+    todayAppointments.forEach(element => {
+        console.log(element.day);
+    });
+    appointments.forEach(element => {
+        // console.log(element.day);
+        var newDate = new Date(element.day);
+        newDate = new Date(newDate.getTime() + (newDate.getTimezoneOffset()*60*1000))
+        var newDay = days[newDate.getDay()] + ', ' + months[newDate.getMonth()] + ' ' + newDate.getDate() + ', ' + newDate.getFullYear();
+        // console.log(newDay);
+        element.day = newDay;
+    });
+    var message2 = "";
+    if ((!todayAppointments || todayAppointments.length === 0) && (!appointments || appointments.length === 0)) {
+        message2 = "No appointments scheduled. To schedule an appointment, select a tutor above.";
+    }
+
     User.findOne({
         _id: decoded,
     })
@@ -401,7 +461,7 @@ exports.favoritesList = (req, res) => {
                     if (tutors.length == 0) {
                         message = "Add a tutor as a favorite to see them listed here! Use the searchbar to continue.";
                     }
-                    res.render("home-authenticated", {'favtutors': tutors, 'allFavorites': user.favorites, 'message': message})
+                    res.render("home-authenticated", {'favtutors': tutors, 'allFavorites': user.favorites, 'message1': message, 'todayAppts' : todayAppointments, 'upcomingAppts': appointments, 'message2': message2})
                 }
             });
         }
@@ -589,5 +649,28 @@ exports.homeTutor = async (req, res) => {
     const todayAppointments = await Appointment.find({ tutorID : decoded , day : {$eq : date}, end24 : {$gte : time}}).sort({start24 : 1});
     const appointments = await Appointment.find({ tutorID : decoded , day : {$gt : date}}).sort({day : 1, start24 : 1});
 
-    res.render("home-authenticated-tutor", {'todayAppts' : todayAppointments, 'upcomingAppts': appointments});
+    // reformat appointment dates
+    var today = []
+    var upcoming = []
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var today = new Date();
+    var offset = -(today.getTimezoneOffset()/60)
+    todayAppointments.forEach(element => {
+        console.log(element.day);
+    });
+    appointments.forEach(element => {
+        // console.log(element.day);
+        var newDate = new Date(element.day);
+        newDate = new Date(newDate.getTime() + (newDate.getTimezoneOffset()*60*1000))
+        var newDay = days[newDate.getDay()] + ', ' + months[newDate.getMonth()] + ' ' + newDate.getDate() + ', ' + newDate.getFullYear();
+        // console.log(newDay);
+        element.day = newDay;
+    });
+    var message2 = "";
+    if ((!todayAppointments || todayAppointments.length === 0) && (!appointments || appointments.length === 0)) {
+        message2 = "No appointments scheduled.";
+    }
+
+    res.render("home-authenticated-tutor", {'todayAppts' : todayAppointments, 'upcomingAppts': appointments, 'message': message2});
 }

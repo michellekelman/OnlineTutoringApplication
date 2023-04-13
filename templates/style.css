@@ -124,6 +124,21 @@ button {
   height: 130px;
 }
 
+.tutorimg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+.tutorimg img {
+  object-fit: cover;
+  object-position: center;
+  width: 230px;
+  height: 230px;
+  margin: 2rem;
+}
+
 .upcoming {
   min-height: 30rem;
   text-align: center;
