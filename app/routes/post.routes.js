@@ -26,5 +26,9 @@ module.exports = function(app) {
 
     app.post("/make-appointment", auth.authJwtUser, controller.appointmentForm);
 
+    app.post("/cancel", auth.authJwtUser, controller.cancelAppt);
+
+    app.post("/cancel-tutor", auth.authJwtTutor, controller.cancelApptTutor);
+
     app.post("/logout", controller.signout);
 }

@@ -98,7 +98,7 @@
           <!-- Three columns of text below the carousel -->
           <div class="row tutors">
             {{#if message1}}
-                <h5 class="alert alert-danger mt-4">{{message1}}</h4>
+                <h5 class="alert alert-danger mt-4 d-flex justify-content-center">{{message1}}</h4>
             {{/if}}
             {{#each tutors}}
               <div class="col-lg-4">
@@ -171,6 +171,9 @@
               {{#if message2}}
                 <p class="lead">{{message2}}</p>
               {{/if}}
+              {{#if message3}}
+                <h5 class="alert alert-danger mt-4">{{message3}}</h4>
+              {{/if}}
               <div class="d-flex row justify-content-center mb-5">
                 {{#each todayAppts}}
                   <div class="col-lg-7">
@@ -189,7 +192,9 @@
                         {{#if meetingLink}}
                           <a href="#" class="btn btn-primary">Join Meeting</a>
                         {{/if}}
-                        <a href="#" class="btn btn-primary">Cancel Appointment</a>
+                        <form class="input-group justify-content-center" action="/cancel" method="POST">
+                          <button id="cancel" name="apptid" type="submit" class="btn btn-primary" value={{_id}}>Cancel Appointment</button>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -211,7 +216,9 @@
                         {{#if meetingLink}}
                           <a href="#" class="btn btn-primary">Join Meeting</a>
                         {{/if}}
-                        <a href="#" class="btn btn-primary">Cancel Appointment</a>
+                        <form class="input-group justify-content-center" action="/cancel" method="POST">
+                          <button id="cancel" name="apptid" type="submit" class="btn btn-primary" value={{_id}}>Cancel Appointment</button>
+                        </form>
                       </div>
                     </div>
                   </div>

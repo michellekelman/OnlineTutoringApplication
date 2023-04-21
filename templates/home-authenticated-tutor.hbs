@@ -82,8 +82,11 @@
           <div class="row upcoming">
             <div class="col-md">
               <h2 class="fw-normal mb-3">Upcoming Appointments</h2>
-              {{#if message}}
-                <p class="lead">{{message}}</p>
+              {{#if message1}}
+                <p class="lead">{{message1}}</p>
+              {{/if}}
+              {{#if message2}}
+                <h5 class="alert alert-danger mt-4">{{message2}}</h4>
               {{/if}}
               <div class="d-flex row justify-content-center mb-5">
                 {{#each todayAppts}}
@@ -103,7 +106,9 @@
                         {{#if meetingLink}}
                           <a href="#" class="btn btn-primary">Join Meeting</a>
                         {{/if}}
-                        <a href="#" class="btn btn-primary">Cancel Appointment</a>
+                        <form class="input-group justify-content-center" action="/cancel-tutor" method="POST">
+                          <button id="cancel" name="apptid" type="submit" class="btn btn-primary" value={{_id}}>Cancel Appointment</button>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -125,7 +130,9 @@
                         {{#if meetingLink}}
                           <a href="#" class="btn btn-primary">Join Meeting</a>
                         {{/if}}
-                        <a href="#" class="btn btn-primary">Cancel Appointment</a>
+                        <form class="input-group justify-content-center" action="/cancel-tutor" method="POST">
+                          <button id="cancel" name="apptid" type="submit" class="btn btn-primary" value={{_id}}>Cancel Appointment</button>
+                        </form>
                       </div>
                     </div>
                   </div>
