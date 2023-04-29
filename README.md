@@ -17,6 +17,6 @@ Comet Study Corner is an online tutoring application that aims to link underpriv
 ```node server.js```
 4. Open the browser of your choice and navigate to [http://localhost:8080/](http://localhost:8080/)
 ## How to Use Comet Study Corner:
-[YouTube Demo Link]()
+[YouTube Demo Link](https://www.youtube.com/watch?v=MyHHkMtlywM)
 ## Repository Link: 
 https://github.com/michellekelman/OnlineTutoringApplication
