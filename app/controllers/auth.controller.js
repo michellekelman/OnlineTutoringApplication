@@ -82,26 +82,16 @@ exports.studentProfile = async (req, res) => {
     const time = currentHour + ":" + currentMinute;
     const pastAppointments = await Appointment.find({ userID : decoded , day : {$lte : date}, end24 : {$lt : time}}).sort({start24 : 1});
 
-
-    var totalHours = 0;
-    var totalMinutes = 0;
+    var totalTime = 0;
     pastAppointments.forEach(element => {
         var startDate = new Date(element.day+"T"+element.start24);
         var endDate = new Date(element.day+"T"+element.end24);
-        var apptHours = endDate.getHours() - startDate.getHours();
-        var apptMinutes = endDate.getMinutes() - startDate.getMinutes();
-        if(apptMinutes < 0){
-            apptHours -= 1;
-            apptMinutes += 60;
-        }
-        totalHours += apptHours;
-        totalMinutes += apptMinutes;
-        if(totalMinutes >= 60){
-            totalHours += 1;
-            apptMinutes %= 60;
-        }
+        var duration = endDate - startDate;
+        totalTime += (duration / (60*1000));
     });
-    var totalTime = totalHours + ":" + totalMinutes;
+    var totalHours = Math.floor(totalTime / 60);
+    var totalMinutes = totalTime % 60;
+    var totalStr = totalHours + " hours and " + totalMinutes + " minutes";
 
     User.findOne({
         _id: decoded,
@@ -120,8 +110,7 @@ exports.studentProfile = async (req, res) => {
                     res.status(500).send({ message: err });
                     return;
                 } else {
-                    user.tutoringHours = totalTime;
-                    res.render("profile", { 'userProfile': user, 'tutors': tutors });
+                    res.render("profile", { 'userProfile': user, 'tutors': tutors, 'hours': totalStr});
                 }
             });
         }
@@ -265,25 +254,17 @@ exports.tutorProfile = async (req, res) => {
     const currentMinute = ('0' + d.getMinutes()).slice(-2);
     const time = currentHour + ":" + currentMinute;
     const pastAppointments = await Appointment.find({ tutorID : decoded , day : {$lte : date}, end24 : {$lt : time}}).sort({start24 : 1});
-    totalHours = 0;
-    var totalMinutes = 0;
+    
+    var totalTime = 0;
     pastAppointments.forEach(element => {
         var startDate = new Date(element.day+"T"+element.start24);
         var endDate = new Date(element.day+"T"+element.end24);
-        var apptHours = endDate.getHours() - startDate.getHours();
-        var apptMinutes = endDate.getMinutes() - startDate.getMinutes();
-        if(apptMinutes < 0){
-            apptHours -= 1;
-            apptMinutes += 60;
-        }
-        totalHours += apptHours;
-        totalMinutes += apptMinutes;
-        if(totalMinutes >= 60){
-            totalHours += 1;
-            apptMinutes %= 60;
-        }
+        var duration = endDate - startDate;
+        totalTime += (duration / (60*1000));
     });
-    var totalTime = totalHours + ":" + totalMinutes;
+    var totalHours = Math.floor(totalTime / 60);
+    var totalMinutes = totalTime % 60;
+    var totalStr = totalHours + " hours and " + totalMinutes + " minutes";
 
     Tutor.findOne({
         _id: decoded,
@@ -298,7 +279,7 @@ exports.tutorProfile = async (req, res) => {
         }
         else {
             tutor.tutoringHours = totalTime;
-            res.render("profile-tutor", {'tutorProfile' : tutor});
+            res.render("profile-tutor", {'tutorProfile' : tutor, 'hours': totalStr});
         }
     });
 };
