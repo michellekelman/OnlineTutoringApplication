@@ -80,9 +80,16 @@ exports.studentProfile = async (req, res) => {
     const currentHour = ('0' + d.getHours()).slice(-2);
     const currentMinute = ('0' + d.getMinutes()).slice(-2);
     const time = currentHour + ":" + currentMinute;
-    const pastAppointments = await Appointment.find({ userID : decoded , day : {$lte : date}, end24 : {$lt : time}}).sort({start24 : 1});
+    const todayPastAppointments = await Appointment.find({ userID : decoded , day : {$eq : date}, end24 : {$lte : time}}).sort({start24 : 1});
+    const pastAppointments = await Appointment.find({ userID : decoded , day : {$lt : date}}).sort({start24 : 1});
 
     var totalTime = 0;
+    todayPastAppointments.forEach(element => {
+        var startDate = new Date(element.day+"T"+element.start24);
+        var endDate = new Date(element.day+"T"+element.end24);
+        var duration = endDate - startDate;
+        totalTime += (duration / (60*1000));
+    });
     pastAppointments.forEach(element => {
         var startDate = new Date(element.day+"T"+element.start24);
         var endDate = new Date(element.day+"T"+element.end24);
@@ -253,9 +260,16 @@ exports.tutorProfile = async (req, res) => {
     const currentHour = ('0' + d.getHours()).slice(-2);
     const currentMinute = ('0' + d.getMinutes()).slice(-2);
     const time = currentHour + ":" + currentMinute;
-    const pastAppointments = await Appointment.find({ tutorID : decoded , day : {$lte : date}, end24 : {$lt : time}}).sort({start24 : 1});
+    const todayPastAppointments = await Appointment.find({ tutorID : decoded , day : {$eq : date}, end24 : {$lte : time}}).sort({start24 : 1});
+    const pastAppointments = await Appointment.find({ tutorID : decoded , day : {$lt : date}}).sort({start24 : 1});
     
     var totalTime = 0;
+    todayPastAppointments.forEach(element => {
+        var startDate = new Date(element.day+"T"+element.start24);
+        var endDate = new Date(element.day+"T"+element.end24);
+        var duration = endDate - startDate;
+        totalTime += (duration / (60*1000));
+    });
     pastAppointments.forEach(element => {
         var startDate = new Date(element.day+"T"+element.start24);
         var endDate = new Date(element.day+"T"+element.end24);
