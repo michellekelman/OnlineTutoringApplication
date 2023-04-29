@@ -70,8 +70,39 @@ exports.studentSignin = (req, res) => {
     });
 };
 
-exports.studentProfile = (req, res) => {
+exports.studentProfile = async (req, res) => {
     const decoded = jwt.verify(req.session.token, config.secret).id;
+    const d = new Date();
+    const currentYear = d.getFullYear();
+    const currentMonth = ('0' + (d.getMonth() + 1)).slice(-2);
+    const currentDate = ('0' + d.getDate()).slice(-2);
+    const date = currentYear + "-" + currentMonth + "-" + currentDate;
+    const currentHour = ('0' + d.getHours()).slice(-2);
+    const currentMinute = ('0' + d.getMinutes()).slice(-2);
+    const time = currentHour + ":" + currentMinute;
+    const pastAppointments = await Appointment.find({ userID : decoded , day : {$lte : date}, end24 : {$lt : time}}).sort({start24 : 1});
+
+
+    var totalHours = 0;
+    var totalMinutes = 0;
+    pastAppointments.forEach(element => {
+        var startDate = new Date(element.day+"T"+element.start24);
+        var endDate = new Date(element.day+"T"+element.end24);
+        var apptHours = endDate.getHours() - startDate.getHours();
+        var apptMinutes = endDate.getMinutes() - startDate.getMinutes();
+        if(apptMinutes < 0){
+            apptHours -= 1;
+            apptMinutes += 60;
+        }
+        totalHours += apptHours;
+        totalMinutes += apptMinutes;
+        if(totalMinutes >= 60){
+            totalHours += 1;
+            apptMinutes %= 60;
+        }
+    });
+    var totalTime = totalHours + ":" + totalMinutes;
+
     User.findOne({
         _id: decoded,
     })
@@ -89,6 +120,7 @@ exports.studentProfile = (req, res) => {
                     res.status(500).send({ message: err });
                     return;
                 } else {
+                    user.tutoringHours = totalTime;
                     res.render("profile", { 'userProfile': user, 'tutors': tutors });
                 }
             });
@@ -221,8 +253,38 @@ exports.tutorSignin = (req, res) => {
     });
 };
 
-exports.tutorProfile = (req, res) => {
+exports.tutorProfile = async (req, res) => {
     const decoded = jwt.verify(req.session.token, config.secret).id;
+
+    const d = new Date();
+    const currentYear = d.getFullYear();
+    const currentMonth = ('0' + (d.getMonth() + 1)).slice(-2);
+    const currentDate = ('0' + d.getDate()).slice(-2);
+    const date = currentYear + "-" + currentMonth + "-" + currentDate;
+    const currentHour = ('0' + d.getHours()).slice(-2);
+    const currentMinute = ('0' + d.getMinutes()).slice(-2);
+    const time = currentHour + ":" + currentMinute;
+    const pastAppointments = await Appointment.find({ tutorID : decoded , day : {$lte : date}, end24 : {$lt : time}}).sort({start24 : 1});
+    totalHours = 0;
+    var totalMinutes = 0;
+    pastAppointments.forEach(element => {
+        var startDate = new Date(element.day+"T"+element.start24);
+        var endDate = new Date(element.day+"T"+element.end24);
+        var apptHours = endDate.getHours() - startDate.getHours();
+        var apptMinutes = endDate.getMinutes() - startDate.getMinutes();
+        if(apptMinutes < 0){
+            apptHours -= 1;
+            apptMinutes += 60;
+        }
+        totalHours += apptHours;
+        totalMinutes += apptMinutes;
+        if(totalMinutes >= 60){
+            totalHours += 1;
+            apptMinutes %= 60;
+        }
+    });
+    var totalTime = totalHours + ":" + totalMinutes;
+
     Tutor.findOne({
         _id: decoded,
     })
@@ -235,6 +297,7 @@ exports.tutorProfile = (req, res) => {
             return res.render("home-authernticated-tutor", {message: "Profile does not exist."});
         }
         else {
+            tutor.tutoringHours = totalTime;
             res.render("profile-tutor", {'tutorProfile' : tutor});
         }
     });
@@ -304,6 +367,7 @@ exports.searchTutorHome = async (req,res) => {
         var newDay = days[newDate.getDay()] + ', ' + months[newDate.getMonth()] + ' ' + newDate.getDate() + ', ' + newDate.getFullYear();
         element.day = newDay;
     });
+
     var message2 = "";
     if ((!todayAppointments || todayAppointments.length === 0) && (!appointments || appointments.length === 0)) {
         message2 = "No appointments scheduled. To schedule an appointment, select a tutor above.";
@@ -658,6 +722,7 @@ exports.homeTutor = async (req, res) => {
         var newDay = days[newDate.getDay()] + ', ' + months[newDate.getMonth()] + ' ' + newDate.getDate() + ', ' + newDate.getFullYear();
         element.day = newDay;
     });
+
     var message1 = "";
     if ((!todayAppointments || todayAppointments.length === 0) && (!appointments || appointments.length === 0)) {
         message1 = "No appointments scheduled.";
