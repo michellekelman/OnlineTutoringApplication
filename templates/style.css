@@ -55,6 +55,24 @@ div {
 
 .heading {
   background-color: var(--color4);
+  padding-left: 2vw;
+  padding-right: 2vw;
+}
+
+.title {
+  justify-content: space-between;
+}
+
+/* Button
+-------------------------------------------------- */
+
+button {
+  color: var(--color3);
+}
+
+.btn-link {
+  text-decoration: none;
+  color: var(--color1);
 }
 
 /* CUSTOMIZE THE CAROUSEL
@@ -83,6 +101,9 @@ div {
 
 /* MAIN CONTENT AREA
 -------------------------------------------------- */
+.main-content {
+  min-height: calc(100vh - 265px);
+}
 
 .search {
   margin: 0 auto;
@@ -103,6 +124,21 @@ div {
   height: 130px;
 }
 
+.tutorimg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+.tutorimg img {
+  object-fit: cover;
+  object-position: center;
+  width: 230px;
+  height: 230px;
+  margin: 2rem;
+}
+
 .upcoming {
   min-height: 30rem;
   text-align: center;
@@ -121,6 +157,14 @@ div {
 .main-content h2 {
   margin-top: 1rem;
   color: var(--color1);
+}
+
+/* Table
+--------------------------------*/
+
+th,
+td {
+  padding: 20px;
 }
 
 /* Footer
@@ -150,14 +194,10 @@ div {
     font-size: 1.25rem;
     line-height: 1.4;
   }
-
-  .featurette-heading {
-    font-size: 50px;
-  }
 }
 
-@media (min-width: 62em) {
-  .featurette-heading {
-    margin-top: 7rem;
+@media (max-width: 70em) {
+  .title {
+    justify-content: center;
   }
 }

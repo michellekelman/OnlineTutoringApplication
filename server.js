@@ -3,7 +3,6 @@
 
 // for building the Rest APIs
 const express = require("express");
-const path = require("path");
 // provides Express middleware to enable CORS 
 // const cors = require("cors");
 // helps store session data on the client within a cookie without requiring any database/resources on the server side
@@ -13,8 +12,10 @@ const dbConfig = require("./app/config/db.config");
 const fileUpload = require('express-fileupload');
 
 const app = express();
+const hbs = require("hbs");
 
 // give name of template (html) files
+const path = require("path");
 const templatePath = path.join(__dirname, './templates');
 
 // connects hbs and MongoDB files
@@ -37,10 +38,6 @@ app.use(
     })
 );
 
-app.get("/", (req,res)=>{
-    res.render("home")
-});
-
 // open Mongoose connection to MongoDB database
 const db = require("./app/models");
 
@@ -57,9 +54,28 @@ db.mongoose
         process.exit();
     });
 
+// for using contains() in hbs
+hbs.registerHelper('contains', function(array, value) {
+    if (array.includes(value)) {
+        return true;
+    } else {
+        return false;
+    }
+});
+
 // routes
-require('./app/routes/post.routes')(app);
+
+// other routes
 require('./app/routes/get.routes')(app);
+require('./app/routes/post.routes')(app);
+
+app.get("/", (req, res) => {
+    res.render("home");
+});
+
+app.get("*", function (req, res) {
+    res.send("PAGE NOT FOUND");   
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

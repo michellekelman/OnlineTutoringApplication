@@ -15,13 +15,13 @@
     
     <!-- Header -->
     <div class="heading">
-      <div class="container">
-        <header class="d-flex flex-wrap justify-content-center py-2">
-          <a href="/" class="d-flex align-items-center m-2 me-auto text-decoration-none">
+      <div class="">
+        <header class="d-flex flex-wrap py-2 title">
+          <a href="/" class="d-flex justify-content-center align-items-center text-decoration-none">
             <img src="img/circleLogo.png" class="center-image" alt="logo">
             <h1 class="site-name">Comet Study Corner</h1>
           </a>
-          <ul class="nav nav-pills align-items-center">
+          <ul class="nav nav-pills justify-content-center align-items-center">
             <li class="nav-item"><a href="student-login" class="nav-link">Student Login</a></li>
             <li class="nav-item"><a href="tutor-login" class="nav-link">Tutor Login</a></li>
             <li class="nav-item"><a href="student-signup" class="nav-link">Student Sign Up</a></li>
@@ -89,69 +89,34 @@
 
         <div class="container main-content">
           <div class="row search col-lg-6">
-            <div class="input-group">
-              <input type="searchbar" class="form-control rounded" placeholder="Search for Tutors" aria-label="Search" aria-describedby="search-addon" />
-              <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
-            </div>
+            <form class="input-group col" action="/search" method="GET">
+              <input name = "query" type="searchbar" class="form-control rounded" placeholder="Search for Tutors" aria-label="Search" aria-describedby="search-addon" />
+              <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+            </form>
           </div>
           <!-- Three columns of text below the carousel -->
           <div class="row tutors">
-            <!-- Tutor 1 -->
-            <div class="col-lg-4">
-              <img src="img/john_doe.jpg" class="rounded-circle img-fluid" alt="tutor_img">
-              <h2 class="fw-normal">John Doe</h2>
-              <p>
-                <b>Subjects</b><br>
-                Rhetoric<br>
-                <b>Availability</b><br>
-                Monday 7p-9p, Wednesday 7p-9p<br>
-                <b>About Me</b><br>
-                SAT prep teacher from the Richardson area
-              </p>
-              <p><a class="btn btn-secondary" href="#">Make Appointment</a></p>
-            </div>
-            <!-- Tutor 2 -->
-            <div class="col-lg-4">
-              <img src="img/jane_doe.jpg" class="rounded-circle" alt="tutor_img">
-              <h2 class="fw-normal">Jane Doe</h2>
-              <p>
-                <b>Subjects</b><br>
-                Calculus I, Calculus II<br>
-                <b>Availability</b><br>
-                Friday 10a-6p<br>
-                <b>About Me</b><br>
-                Junior at UTD majoring in Mathematics
-              </p>
-              <p><a class="btn btn-secondary" href="#">Make Appointment</a></p>
-            </div>
-            <!-- Tutor 3 -->
-            <div class="col-lg-4">
-              <img src="img/josh_doe.jpg" class="rounded-circle img-fluid" alt="tutor_img">
-              <h2 class="fw-normal">Josh Doe</h2>
-              <p>
-                <b>Subjects</b><br>
-                Physics<br>
-                <b>Availability</b><br>
-                Wednesday 11a-4p, Thursday 8a-11a<br>
-                <b>About Me</b><br>
-                Retired physics professor from UTD
-              </p>
-              <p><a class="btn btn-secondary" href="#">Make Appointment</a></p>
-            </div>
-            <!-- Tutor 4 -->
-            <div class="col-lg-4">
-              <img src="img/jean_doe.jpg" class="rounded-circle img-fluid" alt="tutor_img">
-              <h2 class="fw-normal">Jean Doe</h2>
-              <p>
-                <b>Subjects</b><br>
-                Art History<br>
-                <b>Availability</b><br>
-                Monday 4p-6p, Wednesday 4p-6p, Friday 4p-6p<br>
-                <b>About Me</b><br>
-                Instructor from the Art Institute of Dallas
-              </p>
-              <p><a class="btn btn-secondary" href="#">Make Appointment</a></p>
-            </div>
+            {{#if message}}
+                <h5 class="alert alert-danger mt-4">{{message}}</h4>
+            {{/if}}
+            {{#each tutors}}
+              <div class="col-lg-4">
+                <img src="photos/{{_id}}{{profilePic}}" class="rounded-circle img-fluid" alt="tutor_img">
+                <h2 class="fw-normal">{{firstName}} {{lastName}}</h2>
+                <p>
+                  <b>Subjects</b><br>
+                  {{#each this.subjects}} {{this}}{{#unless @last}},{{/unless}} {{/each}}<br>
+                  <b>Availability</b><br>
+                  {{#each this.availability}}
+                    {{this.day}} {{this.start}} - {{this.end}}{{#unless @last}}<br>{{/unless}} 
+                  {{/each}}<br>
+                  <b>About Me</b><br>
+                  {{aboutMe}}
+                </p>
+                <!-- <a class="btn btn-secondary mb-2" href="/student-login">Add To Favorites</a><br>-->
+                <a class="btn btn-secondary" href="/student-login">Make Appointment</a>
+              </div>
+            {{/each}}
           </div>
 
           <hr class="hr my-5">
@@ -160,22 +125,8 @@
           <div class="row upcoming">
             <div class="col-md">
               <h2 class="fw-normal">Upcoming Appointments</h2>
-              <p class="lead">To view upcoming appointments, please <a class="link" href="#">sign in</a>.</p>
+              <p class="lead">To view upcoming appointments, please sign in.</p>
           </div>
-
-          <!-- Upcoming Appointments (signed in) -->
-          <!-- 
-          <div class="row featurette">
-            <div class="col-md-7">
-              <h2 class="featurette-heading fw-normal lh-1">Upcoming Appointments</h2>
-              <br>
-              <p class="lead">Monday, February 20 - Rhetoric with John Doe</p>
-            <p class="lead">Wednesday, February 22 - Art History with Jeff Doe</p><p class="lead">Friday, March 3 - Calculus II with Jane Doe</p></div>
-            <div class="col-md-5">
-              <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-            </div>
-          </div>
-          -->
         </div>
       </main>
     </div>

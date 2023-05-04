@@ -29,7 +29,7 @@
             aboutMe: String,
             profilePic: String,
             subjects: [String],
-            availability: [String],
+            availability: [{day: String, start: String, end: String, start24: String, end24: String}],
             tutoringHours: Number
         })
     );

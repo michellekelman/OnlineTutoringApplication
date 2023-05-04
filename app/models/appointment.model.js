@@ -10,11 +10,25 @@
     const Appointment = mongoose.model(
         "Appointment",
         new mongoose.Schema({
+            userID: {
+                type: mongoose.Types.ObjectId, 
+                ref: 'User',
+                required: true
+            },
+            tutorID: {
+                type: mongoose.Types.ObjectId, 
+                ref: 'Tutor',
+                required: true
+            },
             userFirstName: {
                 type: String,
                 required: true
             },
             userLastName: {
+                type: String,
+                required: true
+            },
+            userEmail: {
                 type: String,
                 required: true
             },
@@ -26,15 +40,28 @@
                 type: String,
                 required: true
             },
-            subject: {
+            tutorEmail: {
                 type: String,
                 required: true
             },
-            startTime: {
+            subject: String,
+            day: {
                 type: String,
                 required: true
             },
-            endTime: {
+            start: {
+                type: String,
+                required: true
+            }, 
+            end: {
+                type: String,
+                required: true
+            },
+            start24: {
+                type: String,
+                required: true
+            }, 
+            end24: {
                 type: String,
                 required: true
             },

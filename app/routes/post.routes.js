@@ -1,6 +1,6 @@
 // POST signup, signin, and signout
 
-const {verifyStudentSignUp, verifyTutorSignUp} = require("../middlewares");
+const auth = require("../middlewares/authJwt");
 const controller = require("../controllers/auth.controller");
 
 module.exports = function(app) {
@@ -11,7 +11,7 @@ module.exports = function(app) {
         );
         next();
     });
-
+    
     app.post("/student-signup", controller.studentSignup);
 
     app.post("/student-login", controller.studentSignin);
@@ -20,5 +20,15 @@ module.exports = function(app) {
 
     app.post("/tutor-login", controller.tutorSignin);
 
-    //app.post("signout", controller.signout);
+    app.post("/modify-favorites", auth.authJwtUser, controller.modifyFavoritesSearch);
+
+    app.post("/modify-favorites-list", auth.authJwtUser, controller.modifyFavoritesList);
+
+    app.post("/make-appointment", auth.authJwtUser, controller.appointmentForm);
+
+    app.post("/cancel", auth.authJwtUser, controller.cancelAppt);
+
+    app.post("/cancel-tutor", auth.authJwtTutor, controller.cancelApptTutor);
+
+    app.post("/logout", controller.signout);
 }
